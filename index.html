@@ -47,7 +47,7 @@
             lastTime     =    (new Date()).getTime(),
             currentTime  =    0,
             delta = 0,
-            max_bubbles = 7,
+            max_bubbles = 30,
             bubbles = new Array(),
             bubble_image_code='data:image/svg+xml;charset=utf-8,<?xml version="1.0" encoding="UTF-8" standalone="no"?>\n                <!-- Created with Inkscape (http://www.inkscape.org/) -->\n\n                <svg\n                   xmlns:dc="http://purl.org/dc/elements/1.1/"\n                   xmlns:cc="http://creativecommons.org/ns#"\n                   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"\n                   xmlns:svg="http://www.w3.org/2000/svg"\n                   xmlns="http://www.w3.org/2000/svg"\n                   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"\n                   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"\n                   width="63.855083"\n                   height="63.855083"\n                   viewBox="0 0 16.894991 16.894991"\n                   version="1.1"\n                   id="svg8"\n                   inkscape:version="0.92.2 5c3e80d, 2017-08-06"\n                   sodipodi:docname="bubble.svg">\n                  <defs\n                     id="defs2" />\n                  <sodipodi:namedview\n                     id="base"\n                     pagecolor="#ffffff"\n                     bordercolor="#666666"\n                     borderopacity="1.0"\n                     inkscape:pageopacity="0.0"\n                     inkscape:pageshadow="2"\n                     inkscape:zoom="7.9195959"\n                     inkscape:cx="70.356621"\n                     inkscape:cy="37.308622"\n                     inkscape:document-units="mm"\n                     inkscape:current-layer="layer1"\n                     showgrid="false"\n                     units="px"\n                     inkscape:window-width="1920"\n                     inkscape:window-height="810"\n                     inkscape:window-x="1763"\n                     inkscape:window-y="134"\n                     inkscape:window-maximized="0" />\n                  <metadata\n                     id="metadata5">\n                    <rdf:RDF>\n                      <cc:Work\n                         rdf:about="">\n                        <dc:format>image/svg+xml</dc:format>\n                        <dc:type\n                           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />\n                        <dc:title></dc:title>\n                      </cc:Work>\n                    </rdf:RDF>\n                  </metadata>\n                  <g\n                     inkscape:label="Layer 1"\n                     inkscape:groupmode="layer"\n                     id="layer1"\n                     transform="translate(-52.222686,-180.04106)">\n                    <path\n                       style="opacity:0.25;fill:#000000;fill-opacity:0.10499998;stroke:none;stroke-width:2.70583963;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"\n                       d="m 256.39648,137.52734 a 17.855302,42.143408 52.167749 0 0 -1.30468,0.35157 35.034683,35.034683 0 0 1 0.47851,5.69336 35.034683,35.034683 0 0 1 -35.03515,35.0332 35.034683,35.034683 0 0 1 -9.63086,-1.41406 30.927541,30.927541 0 0 0 18.40039,6.11328 30.927541,30.927541 0 0 0 30.92773,-30.92578 30.927541,30.927541 0 0 0 -3.83594,-14.85157 z"\n                       transform="matrix(0.26458333,0,0,0.26458333,0,148.17186)"\n                       id="path867"\n                       inkscape:connector-curvature="0" />\n                    <circle\n                       style="opacity:0.25;fill:#e82444;fill-opacity:1;stroke:none;stroke-width:0.52916676;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"\n                       id="path815-7"\n                       cx="60.670181"\n                       cy="188.48856"\n                       r="8.1829119" />\n                    <ellipse\n                       style="opacity:0.25;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.80988121;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"\n                       id="path832-3"\n                       cx="-12.371008"\n                       cy="193.25958"\n                       rx="4.4046226"\n                       ry="3.3429554"\n                       transform="rotate(-21.18424)" />\n                    <ellipse\n                       style="opacity:0.25;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.52916664;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"\n                       id="path832"\n                       cx="13.078985"\n                       cy="192.42632"\n                       rx="2.9399648"\n                       ry="2.1381562"\n                       transform="rotate(-13.61174)" />\n                    <ellipse\n                       style="opacity:0.25;fill:#000000;fill-opacity:0.10499998;stroke:none;stroke-width:0.80988121;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"\n                       id="path832-3-8"\n                       cx="27.201355"\n                       cy="-200.60611"\n                       rx="4.4046226"\n                       ry="3.3429551"\n                       transform="rotate(154.19452)" />\n                    <ellipse\n                       style="opacity:0.25;fill:#000000;fill-opacity:0.10499998;stroke:none;stroke-width:0.52916664;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"\n                       id="path832-2"\n                       cx="0.40236369"\n                       cy="-203.21933"\n                       rx="2.9399648"\n                       ry="2.1381562"\n                       transform="rotate(161.76702)" />\n                    <circle\n                       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.5291667;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"\n                       id="path815"\n                       cx="60.670181"\n                       cy="188.48856"\n                       r="8.1829119" />\n                  </g>\n                </svg>\n',
             audio_pop = null,
@@ -62,7 +62,33 @@
                 '#16d4af',
                 '#d46b16'
             ],
-            bubble_images = new Array();
+            bubble_images = new Array(),
+            sounds = {
+                'bubbadeem' : {
+                    'intro' : 'intro.mp3',
+                    'pause' : 'pause.mp3',
+                    'pop' : [
+                        'pop.mp3'
+                    ]
+                },
+                'norah' : {
+                    'intro' : 'intro.mp3',
+                    'pause' : 'pause.mp3',
+                    'pop' : [
+                        'pop.mp3',
+                        'pop2.mp3',
+                        'pop3.mp3',
+                        'pop4.mp3',
+                        'pop5.mp3',
+                        'pop6.mp3',
+                        'pop7.mp3',
+                        'pop8.mp3'
+                    ]
+                }
+            },
+            active_sounds = 'norah',
+            sounds_audio = new Array(),
+            bubbles_spawned = bubbles_popped = bubbles_missed = 0;
 
         function Bubble () {
 
@@ -72,6 +98,8 @@
             this.posY = false;
             this.popped = false;
             this.image = null;
+            this.path_angle = 90;
+            this.last_path_update = null;
 
             this.setup = function(canvas) {
                 // random between 65 and 130
@@ -81,6 +109,10 @@
                 this.posX = (Math.random() * canvas.width) + 1;
                 this.posY = canvas.height + (this.size / 2);
                 this.image = bubble_images[Math.floor(Math.random() * bubble_images.length)];
+                // Random between 65 and 125 degrees
+                this.path_angle = 65 + (Math.random() * 50);
+                this.last_path_update = (new Date()).getTime();
+                bubbles_spawned++;
             }
 
             this.draw = function(cx, i) {
@@ -88,23 +120,63 @@
                 if (this.posX === false) {
                     this.setup(cx.canvas);
                 } else {
-                    this.posY -= this.speed;
+                    this.path_update_check();
+                    // The math: http://www.helixsoft.nl/articles/circle/sincos.htm
+                    this.posX -= this.speed * Math.cos(this.path_angle * Math.PI / 180);
+                    this.posY -= this.speed * Math.sin(this.path_angle * Math.PI / 180);
                 }
 
-                if (this.posY < (0 - (this.size / 2))) {
+                if (this.posY < (0 - (this.size / 2)) || this.posX < (0 - (this.size / 2))) {
                     this.remove();
                 } else {
                     cx.drawImage(this.image, this.posX - (this.size / 2), this.posY - (this.size / 2), this.size, this.size);
                 }
             }
 
+            this.path_update_check = function() {
+                var low = 1000;
+                var high = 4000;
+
+                var path_delta = currentTime - this.last_path_update;
+
+                if (path_delta > high) {
+                    // force update
+                    this.path_update();
+                } else if (path_delta > low) {
+                    // 1 chance per second
+                    if ((Math.random() * fps) >= (fps - 1)) {
+                        this.path_update();
+                    }
+                }
+            }
+
+            this.path_update = function() {
+                // Sway back and forth
+                if (this.path_angle > 90) {
+                    this.path_angle = 65 + (Math.random() * 25);
+                } else if (this.path_angle < 90) {
+                    this.path_angle = 90 + (Math.random() * 25);
+                } else {
+                    this.path_angle = 65 + (Math.random() * 50);
+                }
+                this.last_path_update = (new Date()).getTime();
+            }
+
             this.pop = function() {
-                audio_pop.play();
+                this.pop_audio();
+                this.popped = true;
                 this.remove();
+                bubbles_popped++;
+            }
+
+            this.pop_audio = function () {
+                sounds_audio[Math.floor(Math.random() * sounds[active_sounds]['pop'].length)].play();
             }
 
             this.remove = function() {
                 var this_bubble = bubbles.indexOf(this);
+                if (!this.popped)
+                    bubbles_missed++;
                 bubbles.splice(this_bubble,1);
             }
 
@@ -138,7 +210,10 @@
                 bubble_images.push(image);
             }
 
-            audio_pop = new Audio('resources/sound/pop.mp3');
+            for (i = 0; i < sounds[active_sounds]['pop'].length; i++) {
+                var audio = new Audio('resources/sound/' + active_sounds + '/pop/' + sounds[active_sounds]['pop'][i]);
+                sounds_audio.push(audio);
+            }
         }
 
         function gameLoop() {
@@ -161,6 +236,8 @@
                 for (i = 0; i < bubbles.length; i++) {
                     bubbles[i].draw(cx);
                 }
+
+                drawPanel();
 
                 lastTime = currentTime - (delta % interval);
                 // console.log("On screen: " + bubbles.length);
@@ -228,7 +305,7 @@
 
     </script>
 </head>
-<body>
+<body oncontextmenu="return false;">
     <canvas id="game_canvas" width="1000" height="562.5"></canvas>
 </body>
 </html>
