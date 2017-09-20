@@ -6,6 +6,7 @@
     [Gameloop - The Correct Way](https://coderwall.com/p/iygcpa/gameloop-the-correct-way)
     [Change SVG fill colour to Canvas](https://stackoverflow.com/questions/27596652/change-svg-fill-color-and-then-draw-to-canvas)
     -->
+    <link href="https://fonts.googleapis.com/css?family=Modak" rel="stylesheet">
     <style type="text/css">
 
     body {
@@ -32,6 +33,7 @@
         display: block;
         position: relative;
         left: 50%;
+        top: 50%;
         background-image: url('resources/backgrounds/mountains_1_transp.png');
         background-size: cover;
     }
@@ -39,19 +41,23 @@
     </style>
     <script type="text/javascript">
 
-        var canvas, cw, ch;
-
-        var cx = null,
-            fps = 30,
-            interval     =    1000/fps,
-            lastTime     =    (new Date()).getTime(),
-            currentTime  =    0,
-            delta = 0,
-            max_bubbles = 30,
-            bubbles = new Array(),
-            bubble_image_code='data:image/svg+xml;charset=utf-8,<?xml version="1.0" encoding="UTF-8" standalone="no"?>\n                <!-- Created with Inkscape (http://www.inkscape.org/) -->\n\n                <svg\n                   xmlns:dc="http://purl.org/dc/elements/1.1/"\n                   xmlns:cc="http://creativecommons.org/ns#"\n                   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"\n                   xmlns:svg="http://www.w3.org/2000/svg"\n                   xmlns="http://www.w3.org/2000/svg"\n                   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"\n                   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"\n                   width="63.855083"\n                   height="63.855083"\n                   viewBox="0 0 16.894991 16.894991"\n                   version="1.1"\n                   id="svg8"\n                   inkscape:version="0.92.2 5c3e80d, 2017-08-06"\n                   sodipodi:docname="bubble.svg">\n                  <defs\n                     id="defs2" />\n                  <sodipodi:namedview\n                     id="base"\n                     pagecolor="#ffffff"\n                     bordercolor="#666666"\n                     borderopacity="1.0"\n                     inkscape:pageopacity="0.0"\n                     inkscape:pageshadow="2"\n                     inkscape:zoom="7.9195959"\n                     inkscape:cx="70.356621"\n                     inkscape:cy="37.308622"\n                     inkscape:document-units="mm"\n                     inkscape:current-layer="layer1"\n                     showgrid="false"\n                     units="px"\n                     inkscape:window-width="1920"\n                     inkscape:window-height="810"\n                     inkscape:window-x="1763"\n                     inkscape:window-y="134"\n                     inkscape:window-maximized="0" />\n                  <metadata\n                     id="metadata5">\n                    <rdf:RDF>\n                      <cc:Work\n                         rdf:about="">\n                        <dc:format>image/svg+xml</dc:format>\n                        <dc:type\n                           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />\n                        <dc:title></dc:title>\n                      </cc:Work>\n                    </rdf:RDF>\n                  </metadata>\n                  <g\n                     inkscape:label="Layer 1"\n                     inkscape:groupmode="layer"\n                     id="layer1"\n                     transform="translate(-52.222686,-180.04106)">\n                    <path\n                       style="opacity:0.25;fill:#000000;fill-opacity:0.10499998;stroke:none;stroke-width:2.70583963;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"\n                       d="m 256.39648,137.52734 a 17.855302,42.143408 52.167749 0 0 -1.30468,0.35157 35.034683,35.034683 0 0 1 0.47851,5.69336 35.034683,35.034683 0 0 1 -35.03515,35.0332 35.034683,35.034683 0 0 1 -9.63086,-1.41406 30.927541,30.927541 0 0 0 18.40039,6.11328 30.927541,30.927541 0 0 0 30.92773,-30.92578 30.927541,30.927541 0 0 0 -3.83594,-14.85157 z"\n                       transform="matrix(0.26458333,0,0,0.26458333,0,148.17186)"\n                       id="path867"\n                       inkscape:connector-curvature="0" />\n                    <circle\n                       style="opacity:0.25;fill:#e82444;fill-opacity:1;stroke:none;stroke-width:0.52916676;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"\n                       id="path815-7"\n                       cx="60.670181"\n                       cy="188.48856"\n                       r="8.1829119" />\n                    <ellipse\n                       style="opacity:0.25;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.80988121;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"\n                       id="path832-3"\n                       cx="-12.371008"\n                       cy="193.25958"\n                       rx="4.4046226"\n                       ry="3.3429554"\n                       transform="rotate(-21.18424)" />\n                    <ellipse\n                       style="opacity:0.25;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.52916664;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"\n                       id="path832"\n                       cx="13.078985"\n                       cy="192.42632"\n                       rx="2.9399648"\n                       ry="2.1381562"\n                       transform="rotate(-13.61174)" />\n                    <ellipse\n                       style="opacity:0.25;fill:#000000;fill-opacity:0.10499998;stroke:none;stroke-width:0.80988121;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"\n                       id="path832-3-8"\n                       cx="27.201355"\n                       cy="-200.60611"\n                       rx="4.4046226"\n                       ry="3.3429551"\n                       transform="rotate(154.19452)" />\n                    <ellipse\n                       style="opacity:0.25;fill:#000000;fill-opacity:0.10499998;stroke:none;stroke-width:0.52916664;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"\n                       id="path832-2"\n                       cx="0.40236369"\n                       cy="-203.21933"\n                       rx="2.9399648"\n                       ry="2.1381562"\n                       transform="rotate(161.76702)" />\n                    <circle\n                       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.5291667;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"\n                       id="path815"\n                       cx="60.670181"\n                       cy="188.48856"\n                       r="8.1829119" />\n                  </g>\n                </svg>\n',
-            audio_pop = null,
-            colour_options = [
+        function Bubbadeem(canvas, settings = null) {
+            this.canvas = canvas;
+            this.gamearea = {
+                'width' : 1000,
+                'height' : 477
+            };
+            this.draw_cx = null;
+            this.fps = 30;
+            this.interval = 1000/this.fps;
+            this.last_time = (new Date()).getTime();
+            this.current_time = 0;
+            this.delta = 0;
+            this.max_bubbles = 30;
+            this.max_bubble_speed = 3;
+            this.bubbles = new Array();
+            this.bubble_image_code='data:image/svg+xml;charset=utf-8,<?xml version="1.0" encoding="UTF-8" standalone="no"?>\n                <!-- Created with Inkscape (http://www.inkscape.org/) -->\n\n                <svg\n                   xmlns:dc="http://purl.org/dc/elements/1.1/"\n                   xmlns:cc="http://creativecommons.org/ns#"\n                   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"\n                   xmlns:svg="http://www.w3.org/2000/svg"\n                   xmlns="http://www.w3.org/2000/svg"\n                   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"\n                   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"\n                   width="63.855083"\n                   height="63.855083"\n                   viewBox="0 0 16.894991 16.894991"\n                   version="1.1"\n                   id="svg8"\n                   inkscape:version="0.92.2 5c3e80d, 2017-08-06"\n                   sodipodi:docname="bubble.svg">\n                  <defs\n                     id="defs2" />\n                  <sodipodi:namedview\n                     id="base"\n                     pagecolor="#ffffff"\n                     bordercolor="#666666"\n                     borderopacity="1.0"\n                     inkscape:pageopacity="0.0"\n                     inkscape:pageshadow="2"\n                     inkscape:zoom="7.9195959"\n                     inkscape:cx="70.356621"\n                     inkscape:cy="37.308622"\n                     inkscape:document-units="mm"\n                     inkscape:current-layer="layer1"\n                     showgrid="false"\n                     units="px"\n                     inkscape:window-width="1920"\n                     inkscape:window-height="810"\n                     inkscape:window-x="1763"\n                     inkscape:window-y="134"\n                     inkscape:window-maximized="0" />\n                  <metadata\n                     id="metadata5">\n                    <rdf:RDF>\n                      <cc:Work\n                         rdf:about="">\n                        <dc:format>image/svg+xml</dc:format>\n                        <dc:type\n                           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />\n                        <dc:title></dc:title>\n                      </cc:Work>\n                    </rdf:RDF>\n                  </metadata>\n                  <g\n                     inkscape:label="Layer 1"\n                     inkscape:groupmode="layer"\n                     id="layer1"\n                     transform="translate(-52.222686,-180.04106)">\n                    <path\n                       style="opacity:0.25;fill:#000000;fill-opacity:0.10499998;stroke:none;stroke-width:2.70583963;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"\n                       d="m 256.39648,137.52734 a 17.855302,42.143408 52.167749 0 0 -1.30468,0.35157 35.034683,35.034683 0 0 1 0.47851,5.69336 35.034683,35.034683 0 0 1 -35.03515,35.0332 35.034683,35.034683 0 0 1 -9.63086,-1.41406 30.927541,30.927541 0 0 0 18.40039,6.11328 30.927541,30.927541 0 0 0 30.92773,-30.92578 30.927541,30.927541 0 0 0 -3.83594,-14.85157 z"\n                       transform="matrix(0.26458333,0,0,0.26458333,0,148.17186)"\n                       id="path867"\n                       inkscape:connector-curvature="0" />\n                    <circle\n                       style="opacity:0.25;fill:#e82444;fill-opacity:1;stroke:none;stroke-width:0.52916676;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"\n                       id="path815-7"\n                       cx="60.670181"\n                       cy="188.48856"\n                       r="8.1829119" />\n                    <ellipse\n                       style="opacity:0.25;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.80988121;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"\n                       id="path832-3"\n                       cx="-12.371008"\n                       cy="193.25958"\n                       rx="4.4046226"\n                       ry="3.3429554"\n                       transform="rotate(-21.18424)" />\n                    <ellipse\n                       style="opacity:0.25;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.52916664;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"\n                       id="path832"\n                       cx="13.078985"\n                       cy="192.42632"\n                       rx="2.9399648"\n                       ry="2.1381562"\n                       transform="rotate(-13.61174)" />\n                    <ellipse\n                       style="opacity:0.25;fill:#000000;fill-opacity:0.10499998;stroke:none;stroke-width:0.80988121;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"\n                       id="path832-3-8"\n                       cx="27.201355"\n                       cy="-200.60611"\n                       rx="4.4046226"\n                       ry="3.3429551"\n                       transform="rotate(154.19452)" />\n                    <ellipse\n                       style="opacity:0.25;fill:#000000;fill-opacity:0.10499998;stroke:none;stroke-width:0.52916664;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"\n                       id="path832-2"\n                       cx="0.40236369"\n                       cy="-203.21933"\n                       rx="2.9399648"\n                       ry="2.1381562"\n                       transform="rotate(161.76702)" />\n                    <circle\n                       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.5291667;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"\n                       id="path815"\n                       cx="60.670181"\n                       cy="188.48856"\n                       r="8.1829119" />\n                  </g>\n                </svg>\n';
+            this.colour_options = [
                 '#e82444',
                 '#119e33',
                 '#1723df',
@@ -61,9 +67,9 @@
                 '#d4c016',
                 '#16d4af',
                 '#d46b16'
-            ],
-            bubble_images = new Array(),
-            sounds = {
+            ];
+            this.bubble_images = new Array();
+            this.sounds = {
                 'bubbadeem' : {
                     'intro' : 'intro.mp3',
                     'pause' : 'pause.mp3',
@@ -85,72 +91,220 @@
                         'pop8.mp3'
                     ]
                 }
-            },
-            active_sounds = 'norah',
-            sounds_audio = new Array(),
-            bubbles_spawned = bubbles_popped = bubbles_missed = 0;
+            };
+            this.active_sounds = 'bubbadeem';
+            this.sounds_audio = new Array();
+            this.bubbles_spawned = 0;
+            this.bubbles_popped = 0;
+            this.bubbles_missed = 0;
+            this.started = true;
+            this.paused = false;
 
-        function Bubble () {
+            if (settings !== null) {
+                if ('fps' in settings) {
+                    this.fps = settings['fps'];
+                }
 
+                if ('max_bubbles' in settings) {
+                    this.max_bubbles = settings['max_bubbles'];
+                }
+
+                if ('bubble_image_code' in settings) {
+                    this.bubble_image_code = settings['bubble_image_code'];
+                }
+
+                if ('colour_options' in settings && settings['colour_options'] instanceof Array) {
+                    this.colour_options = settings['colour_options'];
+                }
+
+                if ('sounds' in settings) {
+                    this.sounds = settings['sounds'];
+                }
+
+                if ('active_sounds' in settings) {
+                    this.active_sounds = settings['active_sounds'];
+                }
+
+                if ('max_bubble_speed' in settings) {
+                    this.max_bubble_speed = settings['max_bubble_speed'];
+                }
+            }
+
+            this.fullscreenify = () => {
+                var style = this.canvas.getAttribute('style') || '';
+
+                window.addEventListener('resize', function () {resize(this.canvas);}, false);
+
+                resize(this.canvas);
+
+                function resize(canvas) {
+                    var scale = Math.min(window.innerWidth/canvas.width,window.innerHeight/canvas.height);
+                    canvas.setAttribute('style', style + ' ' + '-ms-transform-origin: left top; -webkit-transform-origin: left top; -moz-transform-origin: left top; -o-transform-origin: left top; transform-origin: left top; -ms-transform: scale(' + scale + ') translateX(-50%); -webkit-transform: scale3d(' + scale + ', 1) translateX(-50%); -moz-transform: scale(' + scale + ') translateX(-50%); -o-transform: scale(' + scale + ') translateX(-50%) ; transform: scale(' + scale + ') translateX(-50%); ');
+                }
+            }
+
+            this.clickPopListener = (event) => {
+                // console.log(event.offsetX + " " + event.offsetY);
+
+                if (!this.paused) {
+                    if (event.offsetY < this.gamearea.height) {
+                        for (i = 0; i < this.bubbles.length; i++) {
+                            var bubble = this.bubbles[i];
+                            if (bubble.clickCheck(event.offsetX, event.offsetY)) {
+                                bubble.pop();
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+
+            this.init = (draw_cx) => {
+
+                this.fullscreenify();
+
+                this.draw_cx = draw_cx;
+
+                canvas.addEventListener('click', this.clickPopListener, false);
+
+                for (i=0; i < this.colour_options.length; i++) {
+                    var image = new Image();
+                    var image_data = this.bubble_image_code.replace(/#e82444/g, this.colour_options[i]);
+                    image.src = image_data;
+                    this.bubble_images.push(image);
+                }
+
+                this.sounds_audio['pop'] = new Array();
+                for (i = 0; i < this.sounds[this.active_sounds]['pop'].length; i++) {
+                    var audio = new Audio('resources/sound/' + this.active_sounds + '/pop/' + this.sounds[this.active_sounds]['pop'][i]);
+                    this.sounds_audio['pop'].push(audio);
+                }
+
+                this.sounds_audio['intro'] = new Audio('resources/sound/' + this.active_sounds + '/' + this.sounds[this.active_sounds]['intro']);
+                this.sounds_audio['pause'] = new Audio('resources/sound/' + this.active_sounds + '/' + this.sounds[this.active_sounds]['pause']);
+
+                console.log(this.sounds_audio);
+                console.log(this.canvas.width + ", " + this.canvas.height);
+            }
+
+            this.redraw  = () => {
+
+                this.current_time = (new Date()).getTime();
+                this.delta = (this.current_time-this.last_time);
+
+                if(this.delta > this.interval) {
+
+                    this.draw_cx.clearRect(0,0,this.canvas.width,this.canvas.height);
+
+                    if (this.started && !this.paused) {
+                        if (this.bubbles.length < this.max_bubbles) {
+                            if ((this.bubbles.length == 0) || ((Math.random() * this.fps) >= (this.fps - 1))) {
+                                var bubble = new Bubble(this);
+                                this.bubbles.push(bubble);
+                            }
+                        }
+                    }
+
+                    for (i = 0; i < this.bubbles.length; i++) {
+                        this.bubbles[i].draw(this.draw_cx);
+                    }
+
+                    this.drawPanel();
+
+                    this.lastTime = this.currentTime - (this.delta % this.interval);
+                }
+
+            }
+
+            this.pause = () => {
+                this.paused = true;
+                this.sounds_audio['pause'].play();
+            }
+
+            this.resume = () => {
+                this.paused = false;
+            }
+
+            this.drawPanel = () => {
+                this.draw_cx.fillStyle = "#000000";
+                this.draw_cx.fillRect(0,this.gamearea.height,this.gamearea.width,85);
+
+                if (this.paused) {
+                    // Draw pause menu
+                    this.draw_cx.fillStyle = "rgba(0, 0, 0, 0.75)";
+                    this.draw_cx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+                } else {
+                    // Draw pause button
+                    this.draw_cx.fillStyle = "#FFFFFF";
+                }
+            }
+        }
+
+        function Bubble (game) {
+            this.game = game;
             this.base_size = 65;
-            this.base_speed = 30 / fps;
+            this.base_speed = 30 / this.game.fps;
             this.posX = false;
             this.posY = false;
             this.popped = false;
             this.image = null;
             this.path_angle = 90;
             this.last_path_update = null;
+            this.current_time = this.game.current_time;
+            this.score = 0;
 
-            this.setup = function(canvas) {
+            this.setup = (canvas) => {
                 // random between 65 and 130
                 this.size = this.base_size + (Math.random() * 65) + 1;
                 // random between 0 and 4
-                this.speed = this.base_speed + (Math.random() * (this.base_speed * 4));
+                this.speed = this.base_speed + (Math.random() * (this.base_speed * this.game.max_bubble_speed));
                 this.posX = (Math.random() * canvas.width) + 1;
-                this.posY = canvas.height + (this.size / 2);
-                this.image = bubble_images[Math.floor(Math.random() * bubble_images.length)];
+                this.posY = this.game.gamearea.height + (this.size / 2);
+                this.image = this.game.bubble_images[Math.floor(Math.random() * this.game.bubble_images.length)];
                 // Random between 65 and 125 degrees
                 this.path_angle = 65 + (Math.random() * 50);
                 this.last_path_update = (new Date()).getTime();
-                bubbles_spawned++;
+                this.game.bubbles_spawned++;
             }
 
-            this.draw = function(cx, i) {
+            this.draw = (cx, i) => {
 
-                if (this.posX === false) {
-                    this.setup(cx.canvas);
-                } else {
-                    this.path_update_check();
-                    // The math: http://www.helixsoft.nl/articles/circle/sincos.htm
-                    this.posX -= this.speed * Math.cos(this.path_angle * Math.PI / 180);
-                    this.posY -= this.speed * Math.sin(this.path_angle * Math.PI / 180);
+                if (!this.game.paused) {
+                    if (this.posX === false) {
+                        this.setup(this.game.canvas);
+                    } else {
+                        this.path_update_check();
+                        // The math: http://www.helixsoft.nl/articles/circle/sincos.htm
+                        this.posX -= this.speed * Math.cos(this.path_angle * Math.PI / 180);
+                        this.posY -= this.speed * Math.sin(this.path_angle * Math.PI / 180);
+                    }
                 }
 
                 if (this.posY < (0 - (this.size / 2)) || this.posX < (0 - (this.size / 2))) {
                     this.remove();
                 } else {
-                    cx.drawImage(this.image, this.posX - (this.size / 2), this.posY - (this.size / 2), this.size, this.size);
+                    this.game.draw_cx.drawImage(this.image, this.posX - (this.size / 2), this.posY - (this.size / 2), this.size, this.size);
                 }
             }
 
-            this.path_update_check = function() {
+            this.path_update_check = () => {
                 var low = 1000;
                 var high = 4000;
 
-                var path_delta = currentTime - this.last_path_update;
+                var path_delta = this.game.current_time - this.last_path_update;
 
                 if (path_delta > high) {
                     // force update
                     this.path_update();
                 } else if (path_delta > low) {
                     // 1 chance per second
-                    if ((Math.random() * fps) >= (fps - 1)) {
+                    if ((Math.random() * this.game.fps) >= (this.game.fps - 1)) {
                         this.path_update();
                     }
                 }
             }
 
-            this.path_update = function() {
+            this.path_update = () => {
                 // Sway back and forth
                 if (this.path_angle > 90) {
                     this.path_angle = 65 + (Math.random() * 25);
@@ -162,25 +316,25 @@
                 this.last_path_update = (new Date()).getTime();
             }
 
-            this.pop = function() {
+            this.pop = () => {
                 this.pop_audio();
                 this.popped = true;
                 this.remove();
-                bubbles_popped++;
+                this.game.bubbles_popped++;
             }
 
-            this.pop_audio = function () {
-                sounds_audio[Math.floor(Math.random() * sounds[active_sounds]['pop'].length)].play();
+            this.pop_audio = () => {
+                this.game.sounds_audio['pop'][Math.floor(Math.random() * this.game.sounds_audio['pop'].length)].play();
             }
 
-            this.remove = function() {
-                var this_bubble = bubbles.indexOf(this);
+            this.remove = () => {
+                var this_bubble = this.game.bubbles.indexOf(this);
                 if (!this.popped)
-                    bubbles_missed++;
-                bubbles.splice(this_bubble,1);
+                    this.game.bubbles_missed++;
+                this.game.bubbles.splice(this_bubble,1);
             }
 
-            this.clickCheck = function(x, y) {
+            this.clickCheck = (x, y) => {
                 if (Math.sqrt((x-this.posX)*(x-this.posX) + (y-this.posY)*(y-this.posY)) < (this.size / 2)) {
                     return true;
                 }
@@ -189,70 +343,19 @@
 
         }
 
-        function fullscreenify(canvas) {
-            var style = canvas.getAttribute('style') || '';
-
-            window.addEventListener('resize', function () {resize(canvas);}, false);
-
-            resize(canvas);
-
-            function resize(canvas) {
-                var scale = Math.min(window.innerWidth/canvas.width,window.innerHeight/canvas.height);
-                canvas.setAttribute('style', style + ' ' + '-ms-transform-origin: left top; -webkit-transform-origin: left top; -moz-transform-origin: left top; -o-transform-origin: left top; transform-origin: left top; -ms-transform: scale(' + scale + ') translateX(-50%); -webkit-transform: scale3d(' + scale + ', 1) translateX(-50%); -moz-transform: scale(' + scale + ') translateX(-50%); -o-transform: scale(' + scale + ') translateX(-50%); transform: scale(' + scale + ') translateX(-50%); ');
-            }
+        function mainLoop() {
+            window.requestAnimationFrame(mainLoop);
+            game.redraw();
         }
 
-        function gameInit() {
-            for (i=0; i < colour_options.length; i++) {
-                var image = new Image();
-                var image_data = bubble_image_code.replace(/#e82444/g, colour_options[i]);
-                image.src = image_data;
-                bubble_images.push(image);
-            }
-
-            for (i = 0; i < sounds[active_sounds]['pop'].length; i++) {
-                var audio = new Audio('resources/sound/' + active_sounds + '/pop/' + sounds[active_sounds]['pop'][i]);
-                sounds_audio.push(audio);
-            }
-        }
-
-        function gameLoop() {
-            window.requestAnimationFrame(gameLoop);
-
-            currentTime = (new Date()).getTime();
-            delta = (currentTime-lastTime);
-
-            if(delta > interval) {
-
-                cx.clearRect(0,0,cw,cw);
-
-                if (bubbles.length < max_bubbles) {
-                    if ((bubbles.length == 0) || ((Math.random() * fps) >= (fps - 1))) {
-                        var bubble = new Bubble();
-                        bubbles.push(bubble);
-                    }
-                }
-
-                for (i = 0; i < bubbles.length; i++) {
-                    bubbles[i].draw(cx);
-                }
-
-                drawPanel();
-
-                lastTime = currentTime - (delta % interval);
-                // console.log("On screen: " + bubbles.length);
-            }
-        }
+        var canvas, game;
 
         window.addEventListener(
             'load',
             function () {
 
-                canvas = document.getElementsByTagName('canvas')[0],
-                cw = canvas.width,
-                ch = canvas.height;
-
-                fullscreenify(canvas);
+                canvas = document.getElementsByTagName('canvas')[0];
+                game = new Bubbadeem(canvas, { 'active_sounds': 'norah', 'max_bubbles' : 5, 'max_bubble_speed' : 2 });
 
                 var vendors = ['webkit', 'moz'];
                 for(var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
@@ -279,25 +382,9 @@
                 if (typeof (canvas.getContext) !== undefined) {
                     cx = canvas.getContext('2d');
 
-                    gameInit();
+                    game.init(cx);
+                    mainLoop(game);
 
-                    canvas.addEventListener(
-                        'click',
-                        function(event) {
-                            // console.log(event.offsetX + " " + event.offsetY);
-                            for (i = 0; i < bubbles.length; i++) {
-                                var bubble = bubbles[i];
-                                if (bubble.clickCheck(event.offsetX, event.offsetY)) {
-                                    bubble.pop();
-                                    break;
-                                }
-                            }
-
-                        },
-                        false
-                    );
-
-                    gameLoop();
                 }
             },
             false
@@ -306,6 +393,6 @@
     </script>
 </head>
 <body oncontextmenu="return false;">
-    <canvas id="game_canvas" width="1000" height="562.5"></canvas>
+    <canvas id="game_canvas" width="1000" height="562"></canvas>
 </body>
 </html>
