@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Bubbadeem</title>
+    <!--
+    [Gameloop - The Correct Way](https://coderwall.com/p/iygcpa/gameloop-the-correct-way)
+    [Change SVG fill colour to Canvas](https://stackoverflow.com/questions/27596652/change-svg-fill-color-and-then-draw-to-canvas)
+    -->
+    <style type="text/css">
+
+    body {
+        margin: 0;
+        padding: 0;
+    }
+
+    div {
+        margin: 0;
+        padding: 0;
+    }
+
+    canvas {
+        display: block;
+        cursor: pointer;
+        position: relative;
+    }
+
+    #game_wrapper {
+        border: 1px solid #000;
+    }
+
+    #game_canvas {
+        display: block;
+        position: relative;
+        left: 50%;
+        background-image: url('resources/backgrounds/mountains_1_transp.png');
+        background-size: cover;
+    }
+
+    </style>
+    <script type="text/javascript">
+
+        var canvas, cw, ch;
+
+        var cx = null,
+            fps = 30,
+            interval     =    1000/fps,
+            lastTime     =    (new Date()).getTime(),
+            currentTime  =    0,
+            delta = 0,
+            max_bubbles = 7,
+            bubbles = new Array(),
+            bubble_image_code='data:image/svg+xml;charset=utf-8,<?xml version="1.0" encoding="UTF-8" standalone="no"?>\n                <!-- Created with Inkscape (http://www.inkscape.org/) -->\n\n                <svg\n                   xmlns:dc="http://purl.org/dc/elements/1.1/"\n                   xmlns:cc="http://creativecommons.org/ns#"\n                   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"\n                   xmlns:svg="http://www.w3.org/2000/svg"\n                   xmlns="http://www.w3.org/2000/svg"\n                   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"\n                   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"\n                   width="63.855083"\n                   height="63.855083"\n                   viewBox="0 0 16.894991 16.894991"\n                   version="1.1"\n                   id="svg8"\n                   inkscape:version="0.92.2 5c3e80d, 2017-08-06"\n                   sodipodi:docname="bubble.svg">\n                  <defs\n                     id="defs2" />\n                  <sodipodi:namedview\n                     id="base"\n                     pagecolor="#ffffff"\n                     bordercolor="#666666"\n                     borderopacity="1.0"\n                     inkscape:pageopacity="0.0"\n                     inkscape:pageshadow="2"\n                     inkscape:zoom="7.9195959"\n                     inkscape:cx="70.356621"\n                     inkscape:cy="37.308622"\n                     inkscape:document-units="mm"\n                     inkscape:current-layer="layer1"\n                     showgrid="false"\n                     units="px"\n                     inkscape:window-width="1920"\n                     inkscape:window-height="810"\n                     inkscape:window-x="1763"\n                     inkscape:window-y="134"\n                     inkscape:window-maximized="0" />\n                  <metadata\n                     id="metadata5">\n                    <rdf:RDF>\n                      <cc:Work\n                         rdf:about="">\n                        <dc:format>image/svg+xml</dc:format>\n                        <dc:type\n                           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />\n                        <dc:title></dc:title>\n                      </cc:Work>\n                    </rdf:RDF>\n                  </metadata>\n                  <g\n                     inkscape:label="Layer 1"\n                     inkscape:groupmode="layer"\n                     id="layer1"\n                     transform="translate(-52.222686,-180.04106)">\n                    <path\n                       style="opacity:0.25;fill:#000000;fill-opacity:0.10499998;stroke:none;stroke-width:2.70583963;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"\n                       d="m 256.39648,137.52734 a 17.855302,42.143408 52.167749 0 0 -1.30468,0.35157 35.034683,35.034683 0 0 1 0.47851,5.69336 35.034683,35.034683 0 0 1 -35.03515,35.0332 35.034683,35.034683 0 0 1 -9.63086,-1.41406 30.927541,30.927541 0 0 0 18.40039,6.11328 30.927541,30.927541 0 0 0 30.92773,-30.92578 30.927541,30.927541 0 0 0 -3.83594,-14.85157 z"\n                       transform="matrix(0.26458333,0,0,0.26458333,0,148.17186)"\n                       id="path867"\n                       inkscape:connector-curvature="0" />\n                    <circle\n                       style="opacity:0.25;fill:#e82444;fill-opacity:1;stroke:none;stroke-width:0.52916676;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"\n                       id="path815-7"\n                       cx="60.670181"\n                       cy="188.48856"\n                       r="8.1829119" />\n                    <ellipse\n                       style="opacity:0.25;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.80988121;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"\n                       id="path832-3"\n                       cx="-12.371008"\n                       cy="193.25958"\n                       rx="4.4046226"\n                       ry="3.3429554"\n                       transform="rotate(-21.18424)" />\n                    <ellipse\n                       style="opacity:0.25;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.52916664;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"\n                       id="path832"\n                       cx="13.078985"\n                       cy="192.42632"\n                       rx="2.9399648"\n                       ry="2.1381562"\n                       transform="rotate(-13.61174)" />\n                    <ellipse\n                       style="opacity:0.25;fill:#000000;fill-opacity:0.10499998;stroke:none;stroke-width:0.80988121;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"\n                       id="path832-3-8"\n                       cx="27.201355"\n                       cy="-200.60611"\n                       rx="4.4046226"\n                       ry="3.3429551"\n                       transform="rotate(154.19452)" />\n                    <ellipse\n                       style="opacity:0.25;fill:#000000;fill-opacity:0.10499998;stroke:none;stroke-width:0.52916664;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"\n                       id="path832-2"\n                       cx="0.40236369"\n                       cy="-203.21933"\n                       rx="2.9399648"\n                       ry="2.1381562"\n                       transform="rotate(161.76702)" />\n                    <circle\n                       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.5291667;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"\n                       id="path815"\n                       cx="60.670181"\n                       cy="188.48856"\n                       r="8.1829119" />\n                  </g>\n                </svg>\n',
+            audio_pop = null,
+            colour_options = [
+                '#e82444',
+                '#119e33',
+                '#1723df',
+                '#d017df',
+                '#f175d9',
+                '#f1e475',
+                '#d4c016',
+                '#16d4af',
+                '#d46b16'
+            ],
+            bubble_images = new Array();
+
+        function Bubble () {
+
+            this.base_size = 65;
+            this.base_speed = 30 / fps;
+            this.posX = false;
+            this.posY = false;
+            this.popped = false;
+            this.image = null;
+
+            this.setup = function(canvas) {
+                // random between 65 and 130
+                this.size = this.base_size + (Math.random() * 65) + 1;
+                // random between 0 and 4
+                this.speed = this.base_speed + (Math.random() * (this.base_speed * 4));
+                this.posX = (Math.random() * canvas.width) + 1;
+                this.posY = canvas.height + (this.size / 2);
+                this.image = bubble_images[Math.floor(Math.random() * bubble_images.length)];
+            }
+
+            this.draw = function(cx, i) {
+
+                if (this.posX === false) {
+                    this.setup(cx.canvas);
+                } else {
+                    this.posY -= this.speed;
+                }
+
+                if (this.posY < (0 - (this.size / 2))) {
+                    this.remove();
+                } else {
+                    cx.drawImage(this.image, this.posX - (this.size / 2), this.posY - (this.size / 2), this.size, this.size);
+                }
+            }
+
+            this.pop = function() {
+                audio_pop.play();
+                this.remove();
+            }
+
+            this.remove = function() {
+                var this_bubble = bubbles.indexOf(this);
+                bubbles.splice(this_bubble,1);
+            }
+
+            this.clickCheck = function(x, y) {
+                if (Math.sqrt((x-this.posX)*(x-this.posX) + (y-this.posY)*(y-this.posY)) < (this.size / 2)) {
+                    return true;
+                }
+                return false;
+            }
+
+        }
+
+        function fullscreenify(canvas) {
+            var style = canvas.getAttribute('style') || '';
+
+            window.addEventListener('resize', function () {resize(canvas);}, false);
+
+            resize(canvas);
+
+            function resize(canvas) {
+                var scale = Math.min(window.innerWidth/canvas.width,window.innerHeight/canvas.height);
+                canvas.setAttribute('style', style + ' ' + '-ms-transform-origin: left top; -webkit-transform-origin: left top; -moz-transform-origin: left top; -o-transform-origin: left top; transform-origin: left top; -ms-transform: scale(' + scale + ') translateX(-50%); -webkit-transform: scale3d(' + scale + ', 1) translateX(-50%); -moz-transform: scale(' + scale + ') translateX(-50%); -o-transform: scale(' + scale + ') translateX(-50%); transform: scale(' + scale + ') translateX(-50%); ');
+            }
+        }
+
+        function gameInit() {
+            for (i=0; i < colour_options.length; i++) {
+                var image = new Image();
+                var image_data = bubble_image_code.replace(/#e82444/g, colour_options[i]);
+                image.src = image_data;
+                bubble_images.push(image);
+            }
+
+            audio_pop = new Audio('resources/sound/pop.mp3');
+        }
+
+        function gameLoop() {
+            window.requestAnimationFrame(gameLoop);
+
+            currentTime = (new Date()).getTime();
+            delta = (currentTime-lastTime);
+
+            if(delta > interval) {
+
+                cx.clearRect(0,0,cw,cw);
+
+                if (bubbles.length < max_bubbles) {
+                    if ((bubbles.length == 0) || ((Math.random() * fps) >= (fps - 1))) {
+                        var bubble = new Bubble();
+                        bubbles.push(bubble);
+                    }
+                }
+
+                for (i = 0; i < bubbles.length; i++) {
+                    bubbles[i].draw(cx);
+                }
+
+                lastTime = currentTime - (delta % interval);
+                // console.log("On screen: " + bubbles.length);
+            }
+        }
+
+        window.addEventListener(
+            'load',
+            function () {
+
+                canvas = document.getElementsByTagName('canvas')[0],
+                cw = canvas.width,
+                ch = canvas.height;
+
+                fullscreenify(canvas);
+
+                var vendors = ['webkit', 'moz'];
+                for(var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
+                    window.requestAnimationFrame = window[vendors[x]+'RequestAnimationFrame'];
+                    window.cancelAnimationFrame =
+                      window[vendors[x]+'CancelAnimationFrame'] || window[vendors[x]+'CancelRequestAnimationFrame'];
+                }
+
+                if (!window.requestAnimationFrame)
+                    window.requestAnimationFrame = function(callback, element) {
+                        var currTime = new Date().getTime();
+                        var timeToCall = Math.max(0, 16 - (currTime - lastTime));
+                        var id = window.setTimeout(function() { callback(currTime + timeToCall); },
+                          timeToCall);
+                        lastTime = currTime + timeToCall;
+                        return id;
+                    };
+
+                if (!window.cancelAnimationFrame)
+                    window.cancelAnimationFrame = function(id) {
+                        clearTimeout(id);
+                    };
+
+                if (typeof (canvas.getContext) !== undefined) {
+                    cx = canvas.getContext('2d');
+
+                    gameInit();
+
+                    canvas.addEventListener(
+                        'click',
+                        function(event) {
+                            // console.log(event.offsetX + " " + event.offsetY);
+                            for (i = 0; i < bubbles.length; i++) {
+                                var bubble = bubbles[i];
+                                if (bubble.clickCheck(event.offsetX, event.offsetY)) {
+                                    bubble.pop();
+                                    break;
+                                }
+                            }
+
+                        },
+                        false
+                    );
+
+                    gameLoop();
+                }
+            },
+            false
+        );
+
+    </script>
+</head>
+<body>
+    <canvas id="game_canvas" width="1000" height="562.5"></canvas>
+</body>
+</html>
