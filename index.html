@@ -173,6 +173,7 @@
             this.draw_cx = null;
             this.fps = 30;
             this.interval = 1000/this.fps;
+            this.game_time = 0;
             this.last_time = (new Date()).getTime();
             this.current_time = 0;
             this.delta = 0;
@@ -219,6 +220,7 @@
             };
             this.active_sounds = 'bubbadeem';
             this.sounds_audio = new Array();
+            this.score = 0;
             this.bubbles_spawned = 0;
             this.bubbles_popped = 0;
             this.bubbles_missed = 0;
@@ -404,26 +406,34 @@
 
             this.redraw  = () => {
 
-                this.current_time = (new Date()).getTime();
-                this.delta = (this.current_time-this.last_time);
+                this.current_time = new Date();
+                this.delta = Math.abs(this.current_time-this.last_time);
 
                 if(this.delta > this.interval) {
 
                     this.draw_cx.clearRect(0,0,this.canvas.width,this.canvas.height);
 
                     if (this.started) {
-                        if (!this.paused)
+                        if (!this.paused) {
                             this.createBubbleCheck();
+                            this.game_time += this.delta;
+                        }
 
                         this.drawBubbles();
                         this.drawPanel();
 
-                        if (this.paused)
+                        if (this.paused) {
                             this.drawPauseMenu();
+                        }
+
 
                     } else {
                         this.drawStartScreen();
                     }
+
+                    // console.log(this.game_time);
+                    // console.log('Score: '+this.score);
+                    // console.log('SPS: '+ this.score / (this.game_time / 1000));
 
                     this.lastTime = this.currentTime - (this.delta % this.interval);
                     this.ticks++;
@@ -516,9 +526,14 @@
 
             this.restart = () => {
                 this.bubbles.length = 0;
+                this.bubbles_spawned = 0;
+                this.bubbles_missed = 0;
+                this.bubbles_popped = 0;
+                this.score = 0;
                 this.started = true;
                 this.paused = false;
-                this.sounds_audio['start'].play();
+                this.sounds_audio['intro'].play();
+                this.game_time = 0;
             }
 
             this.stop = () => {
@@ -543,7 +558,6 @@
             this.fullscreen = fullscreen;
 
             this.setup = (canvas) => {
-                // random between 65 and 130
                 this.size = this.base_size + (Math.random() * 65) + 1;
                 // random between 0 and 4
                 this.speed = this.base_speed + (Math.random() * (this.base_speed * this.game.max_bubble_speed));
@@ -557,6 +571,13 @@
                 // Random between 65 and 125 degrees
                 this.path_angle = 65 + (Math.random() * 50);
                 this.last_path_update = (new Date()).getTime();
+
+                // Score is 65% based on speed, 35% based on size
+                // Max score for a bubble is 100
+                var speed_score = (this.speed / (this.base_speed + this.game.max_bubble_speed)) * 0.65;
+                var size_score = (this.size / (this.base_size + 65 + 1)) * 0.35;
+                this.score = Math.floor((speed_score + size_score) * 100);
+
                 this.game.bubbles_spawned++;
             }
 
@@ -612,6 +633,7 @@
             this.pop = () => {
                 this.pop_audio();
                 this.popped = true;
+                this.game.score += this.score;
                 this.remove();
                 this.game.bubbles_popped++;
             }
