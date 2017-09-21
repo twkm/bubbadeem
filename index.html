@@ -9,9 +9,15 @@
     <link href="https://fonts.googleapis.com/css?family=Modak" rel="stylesheet">
     <style type="text/css">
 
+    html {
+        min-height: 100vh;
+    }
+
     body {
         margin: 0;
         padding: 0;
+        height: 100vh;
+        background-color: #000;
     }
 
     div {
@@ -36,6 +42,7 @@
         top: 50%;
         background-image: url('resources/backgrounds/mountains_1_transp.png');
         background-size: cover;
+        background-color: #FFF;
     }
 
     </style>
@@ -97,8 +104,10 @@
             this.bubbles_spawned = 0;
             this.bubbles_popped = 0;
             this.bubbles_missed = 0;
-            this.started = true;
+            this.started = false;
             this.paused = false;
+            this.animationQueue = new Array();
+            this.ticks = 0;
 
             if (settings !== null) {
                 if ('fps' in settings) {
@@ -139,14 +148,14 @@
 
                 function resize(canvas) {
                     var scale = Math.min(window.innerWidth/canvas.width,window.innerHeight/canvas.height);
-                    canvas.setAttribute('style', style + ' ' + '-ms-transform-origin: left top; -webkit-transform-origin: left top; -moz-transform-origin: left top; -o-transform-origin: left top; transform-origin: left top; -ms-transform: scale(' + scale + ') translateX(-50%); -webkit-transform: scale3d(' + scale + ', 1) translateX(-50%); -moz-transform: scale(' + scale + ') translateX(-50%); -o-transform: scale(' + scale + ') translateX(-50%) ; transform: scale(' + scale + ') translateX(-50%); ');
+                    canvas.setAttribute('style', style + ' ' + '-ms-transform-origin: left top; -webkit-transform-origin: left top; -moz-transform-origin: left top; -o-transform-origin: left top; transform-origin: left top; -ms-transform: scale(' + scale + ') translateX(-50%) translateY(-50%); -webkit-transform: scale3d(' + scale + ', 1) translateX(-50%) translateY(-50%); -moz-transform: scale(' + scale + ') translateX(-50%) translateY(-50%); -o-transform: scale(' + scale + ') translateX(-50%) translateY(-50%); transform: scale(' + scale + ') translateX(-50%) translateY(-50%);');
                 }
             }
 
             this.clickPopListener = (event) => {
                 // console.log(event.offsetX + " " + event.offsetY);
 
-                if (!this.paused) {
+                if (!this.paused && this.started) {
                     if (event.offsetY < this.gamearea.height) {
                         for (i = 0; i < this.bubbles.length; i++) {
                             var bubble = this.bubbles[i];
@@ -182,9 +191,24 @@
 
                 this.sounds_audio['intro'] = new Audio('resources/sound/' + this.active_sounds + '/' + this.sounds[this.active_sounds]['intro']);
                 this.sounds_audio['pause'] = new Audio('resources/sound/' + this.active_sounds + '/' + this.sounds[this.active_sounds]['pause']);
+            }
 
-                console.log(this.sounds_audio);
-                console.log(this.canvas.width + ", " + this.canvas.height);
+            this.createBubbleCheck = (max_bubbles_override = null, fullscreen = false) => {
+                
+                var max_bubbles = (max_bubbles_override !== null) ? max_bubbles_override : this.max_bubbles;
+
+                if (this.bubbles.length < max_bubbles) {
+                    if ((this.bubbles.length == 0) || ((Math.random() * this.fps) >= (this.fps - 1))) {
+                        var bubble = new Bubble(this, fullscreen);
+                        this.bubbles.push(bubble);
+                    }
+                }
+            }
+
+            this.drawBubbles = () => {
+                for (i = 0; i < this.bubbles.length; i++) {
+                    this.bubbles[i].draw();
+                }
             }
 
             this.redraw  = () => {
@@ -196,22 +220,24 @@
 
                     this.draw_cx.clearRect(0,0,this.canvas.width,this.canvas.height);
 
-                    if (this.started && !this.paused) {
-                        if (this.bubbles.length < this.max_bubbles) {
-                            if ((this.bubbles.length == 0) || ((Math.random() * this.fps) >= (this.fps - 1))) {
-                                var bubble = new Bubble(this);
-                                this.bubbles.push(bubble);
-                            }
+                    if (this.started) {
+                        if (!this.paused) {
+                            this.createBubbleCheck();
                         }
+
+                        this.drawBubbles();
+                        this.drawPanel();
+
+                    } else {
+                        this.drawStartScreen();
                     }
 
-                    for (i = 0; i < this.bubbles.length; i++) {
-                        this.bubbles[i].draw(this.draw_cx);
-                    }
-
-                    this.drawPanel();
+                    // for (i = 0; i < this.animationQueue.length; i++){
+                    //     this.animationQueue[i].draw();
+                    // }
 
                     this.lastTime = this.currentTime - (this.delta % this.interval);
+                    this.ticks++;
                 }
 
             }
@@ -238,9 +264,78 @@
                     this.draw_cx.fillStyle = "#FFFFFF";
                 }
             }
+
+            this.drawStartScreen = () => {
+                
+                this.createBubbleCheck(63, true);
+                this.drawBubbles();
+
+                // if (this.ticks == 0){
+                //     this.animationQueue.push(new animatedText(this, "BUBBADEEM!", callback = addStartButton));
+                // }
+
+                this.draw_cx.font="135px Modak";
+                this.draw_cx.textAlign="center";
+                this.draw_cx.fillText("BUBBADEEM!", this.canvas.width / 2, 250);
+                
+            }
+
+            this.restart = () => {
+                this.bubbles.length = 0;
+                this.started = true;
+            }
         }
 
-        function Bubble (game) {
+        function animatedText (game, text = "Placeholder", alignment = "center", font = "135px Modak", colour = "#000", speed = 5, start = Array(0,0), stop = Array(400,400), callback = false) {
+            
+            if (!game instanceof Bubbadeem)
+                return false;
+
+            this.game = game;
+            this.text = text;
+            this.alignment = alignment;
+            this.font = font;
+            this.colour = colour;
+            this.speed = speed;
+            this.finished = false;
+            this.callback = callback;
+
+            if (start instanceof Array && stop instanceof Array) {
+                this.start = start;
+                this.stop = stop;
+            } else {
+                return false;
+            }
+
+            this.posX = start[0];
+            this.posY = start[1];
+
+            this.draw = () => {
+                this.game.draw_cx.font=this.font;
+                this.game.draw_cx.textAlign=this.alignment;
+                
+                if (!this.finished) {
+                    this.posX -= this.speed * Math.cos(this.path_angle * Math.PI / 180);
+                    this.posY -= this.speed * Math.sin(this.path_angle * Math.PI / 180);
+                }
+
+                console.log(this.posX);
+
+                this.game.draw_cx.fillText(this.text, this.posX, this.posY);
+            }
+
+            if (Array(this.posX, this.posY) == this.stop && !this.finished) {
+                this.finished = true;
+
+                if (callback) {
+                    callback();
+                }
+            }
+
+            
+        }
+
+        function Bubble (game, fullscreen) {
             this.game = game;
             this.base_size = 65;
             this.base_speed = 30 / this.game.fps;
@@ -252,6 +347,7 @@
             this.last_path_update = null;
             this.current_time = this.game.current_time;
             this.score = 0;
+            this.fullscreen = fullscreen;
 
             this.setup = (canvas) => {
                 // random between 65 and 130
@@ -259,7 +355,11 @@
                 // random between 0 and 4
                 this.speed = this.base_speed + (Math.random() * (this.base_speed * this.game.max_bubble_speed));
                 this.posX = (Math.random() * canvas.width) + 1;
-                this.posY = this.game.gamearea.height + (this.size / 2);
+                if (this.fullscreen) {
+                    this.posY = this.game.canvas.height + (this.size / 2);    
+                } else {
+                    this.posY = this.game.gamearea.height + (this.size / 2);    
+                }
                 this.image = this.game.bubble_images[Math.floor(Math.random() * this.game.bubble_images.length)];
                 // Random between 65 and 125 degrees
                 this.path_angle = 65 + (Math.random() * 50);
@@ -267,7 +367,7 @@
                 this.game.bubbles_spawned++;
             }
 
-            this.draw = (cx, i) => {
+            this.draw = () => {
 
                 if (!this.game.paused) {
                     if (this.posX === false) {
