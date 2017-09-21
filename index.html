@@ -226,6 +226,33 @@
             this.paused = false;
             this.ticks = 0;
             this.lang = 'en';
+            this.pause_menu = {
+                'buttons' : {
+                    'dimensions' : [475,65],
+                    'resume' : {
+                        'position' : [262, 124]
+                    },
+                    'restart' : {
+                        'position' : [262, 202]
+                    },
+                    'quit' : {
+                        'position' : [262,279]
+                    }
+                },
+                'panel' : {
+                    'image': 'resources/svg/pause_background.svg',
+                    'position' : [250, 34],
+                    'dimensions' : [500, 406]
+                }
+            };
+            this.panel = {
+                'buttons' : {
+                    'pause' : {
+                        'position' : [927, 487],
+                        'dimensions': [65, 65]
+                    }
+                }
+            }
 
             if (settings !== null) {
                 if ('fps' in settings) {
@@ -278,10 +305,30 @@
                 }
             }
 
+            this.clickCheckUtil = (pos, dim, event_pos) => {
+                if (!pos instanceof Array && pos.length != 2)
+                    return false
+                if (!dim instanceof Array && dim.length != 2)
+                    return false
+                if (!event_pos instanceof Array && event_pos.length != 2)
+                    return false
+
+                var xmin = pos[0];
+                var xmax = pos[0] + dim[0];
+
+                var ymin = pos[1];
+                var ymax = pos[1] + dim[1];
+
+                if ( ( xmax > event_pos[0] && event_pos[0] > xmin ) && ( ymax > event_pos[1] && event_pos[1] > ymin ) )
+                    return true;
+                return false;
+            }
+
             this.clickPopListener = (event) => {
                 // console.log(event.offsetX + " " + event.offsetY);
                 if (!this.paused && this.started) {
                     if (event.offsetY < this.gamearea.height) {
+                        // Bubble area
                         for (i = 0; i < this.bubbles.length; i++) {
                             var bubble = this.bubbles[i];
                             if (bubble.clickCheck(event.offsetX, event.offsetY)) {
@@ -289,6 +336,12 @@
                                 break;
                             }
                         }
+                    } else {
+                        // Panel buttons
+
+                        // Pause button
+                        if (this.clickCheckUtil(this.panel.buttons.pause.position, this.panel.buttons.pause.dimensions, [event.offsetX, event.offsetY]))
+                            this.pause();
                     }
                 }
 
@@ -297,6 +350,17 @@
                     if ( (650 > event.offsetX && event.offsetX > 350) && (412 > event.offsetY && event.offsetY > 300) ) {
                         this.restart();
                     }
+                }
+
+                if (this.paused) {
+                    if (this.clickCheckUtil(this.pause_menu.buttons.resume.position, this.pause_menu.buttons.dimensions, [event.offsetX, event.offsetY]))
+                        this.resume();
+
+                    if (this.clickCheckUtil(this.pause_menu.buttons.restart.position, this.pause_menu.buttons.dimensions, [event.offsetX, event.offsetY]))
+                        this.restart();
+
+                    if (this.clickCheckUtil(this.pause_menu.buttons.quit.position, this.pause_menu.buttons.dimensions, [event.offsetX, event.offsetY]))
+                        this.stop();
                 }
             }
 
@@ -348,12 +412,14 @@
                     this.draw_cx.clearRect(0,0,this.canvas.width,this.canvas.height);
 
                     if (this.started) {
-                        if (!this.paused) {
+                        if (!this.paused)
                             this.createBubbleCheck();
-                        }
 
                         this.drawBubbles();
                         this.drawPanel();
+
+                        if (this.paused)
+                            this.drawPauseMenu();
 
                     } else {
                         this.drawStartScreen();
@@ -365,17 +431,45 @@
 
             }
 
+            this.drawPauseMenu = () => {
+                // Draw pause menu
+                this.draw_cx.fillStyle = "rgba(0, 0, 0, 0.75)";
+                this.draw_cx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+
+                var panel_bg_img = new Image();
+                panel_bg_img.src = 'resources/svg/pause_background.svg';
+                this.draw_cx.drawImage(panel_bg_img, 250, 34, 500, 406);
+
+                var button_img = new Image();
+                button_img.src = 'resources/svg/pause_button.svg';
+
+                this.draw_cx.fillStyle = "#FFF";
+                this.draw_cx.font = "700 48px Roboto";
+                this.draw_cx.fillText(language['paused'], this.canvas.width / 2, this.pause_menu.panel.position[1] + 64);
+
+                this.draw_cx.fillStyle = "#000";
+                this.draw_cx.font = "700 48px Roboto";
+                // Resume
+                this.draw_cx.drawImage(button_img, this.pause_menu.buttons.resume.position[0], this.pause_menu.buttons.resume.position[1], this.pause_menu.buttons.dimensions[0], this.pause_menu.buttons.dimensions[1]);
+                this.draw_cx.fillText(language['resume'], this.canvas.width / 2, this.pause_menu.buttons.resume.position[1] + 49);
+                // Restart
+                this.draw_cx.drawImage(button_img, this.pause_menu.buttons.restart.position[0], this.pause_menu.buttons.restart.position[1], this.pause_menu.buttons.dimensions[0], this.pause_menu.buttons.dimensions[1]);
+                this.draw_cx.fillText(language['restart'], this.canvas.width / 2, this.pause_menu.buttons.restart.position[1] + 49);
+                // Quit
+                this.draw_cx.drawImage(button_img, this.pause_menu.buttons.quit.position[0], this.pause_menu.buttons.quit.position[1], this.pause_menu.buttons.dimensions[0], this.pause_menu.buttons.dimensions[1]);
+                this.draw_cx.font = "700 48px Roboto";
+                this.draw_cx.fillText(language['quit'], this.canvas.width / 2, this.pause_menu.buttons.quit.position[1] + 49);
+            }
+
             this.drawPanel = () => {
                 this.draw_cx.fillStyle = "#000000";
                 this.draw_cx.fillRect(0,this.gamearea.height,this.gamearea.width,85);
 
-                if (this.paused) {
-                    // Draw pause menu
-                    this.draw_cx.fillStyle = "rgba(0, 0, 0, 0.75)";
-                    this.draw_cx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-                } else {
+                if (!this.paused) {
                     // Draw pause button
-                    this.draw_cx.fillStyle = "#FFFFFF";
+                    var pause_button = new Image();
+                    pause_button.src = 'resources/svg/panel_pause_button.svg';
+                    this.draw_cx.drawImage(pause_button, this.panel.buttons.pause.position[0], this.panel.buttons.pause.position[1], this.panel.buttons.pause.dimensions[0], this.panel.buttons.pause.dimensions[1]);
                 }
             }
 
@@ -392,13 +486,15 @@
                 this.draw_cx.font="135px Modak";
                 this.draw_cx.textAlign="center";
                 this.draw_cx.fillText(language['game'], this.canvas.width / 2, 250);
+                this.draw_cx.lineWidth = 4;
+                this.draw_cx.strokeStyle = "#FFF";
+                this.draw_cx.strokeText(language['game'], this.canvas.width / 2, 250);
 
                 var button_code = 'data:image/svg+xml;charset=utf-8,<?xml version="1.0" encoding="UTF-8" standalone="no"?>                <svg                   xmlns:dc="http://purl.org/dc/elements/1.1/"                   xmlns:cc="http://creativecommons.org/ns#"                   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"                   xmlns:svg="http://www.w3.org/2000/svg"                   xmlns="http://www.w3.org/2000/svg"                   xmlns:xlink="http://www.w3.org/1999/xlink"                   id="svg1520"                   version="1.1"                   viewBox="0 0 79.374016 29.66188"                   height="29.66188mm"                   width="79.374016mm">                  <defs                     id="defs1514">                    <linearGradient                       id="linearGradient2137">                      <stop                         style="stop-color:#ffffff;stop-opacity:0.5"                         offset="0"                         id="stop2133" />                      <stop                         style="stop-color:#4a4a4a;stop-opacity:0"                         offset="1"                         id="stop2135" />                    </linearGradient>                    <linearGradient                       gradientUnits="userSpaceOnUse"                       y2="44.97963"                       x2="87.169624"                       y1="57.274029"                       x1="87.169624"                       id="linearGradient2107"                       xlink:href="#linearGradient2137" />                  </defs>                  <metadata                     id="metadata1517">                    <rdf:RDF>                      <cc:Work                         rdf:about="">                        <dc:format>image/svg+xml</dc:format>                        <dc:type                           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />                        <dc:title></dc:title>                      </cc:Work>                    </rdf:RDF>                  </metadata>                  <g                     style="display:inline"                     id="layer3">                    <rect                       ry="2.5480402"                       rx="2.610929"                       y="0.94686645"                       x="0.93209398"                       height="27.76815"                       width="77.509819"                       id="rect837-6-0"                       style="opacity:1;fill:#7442fb;fill-opacity:0.5;stroke:none;stroke-width:0.80684924;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />                  </g>                  <g                     transform="translate(-51.02728,-29.680965)"                     id="layer1">                    <rect                       ry="2.645833"                       rx="2.6458333"                       y="30.094965"                       x="51.44128"                       height="28.833881"                       width="78.546013"                       id="rect837"                       style="opacity:1;fill:none;fill-opacity:1;stroke:#ffffff;stroke-width:0.82800001;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.98009949" />                    <rect                       ry="2.5480402"                       rx="2.610929"                       y="30.627832"                       x="51.959377"                       height="27.76815"                       width="77.509819"                       id="rect837-6"                       style="opacity:1;fill:url(#linearGradient2107);fill-opacity:1;stroke:#000000;stroke-width:0.80684924;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;" />                  </g>                </svg>';
 
                 var button_img = new Image();
-                var button_img_data = button_code;
                 // var button_img_data = button_code.replace(/#e82444/g, this.colour_options[i]);
-                button_img.src = button_img_data;
+                button_img.src = 'resources/svg/button.svg';
                 this.draw_cx.drawImage(button_img, 350, 300, 300, 112);
 
                 this.draw_cx.font = "700 48px Roboto";
@@ -521,7 +617,6 @@
             }
 
             this.pop_audio = () => {
-
                 sound = new Audio('resources/sound/' + this.game.active_sounds + '/pop/' + this.game.sounds[this.game.active_sounds]['pop'][Math.floor(Math.random() * this.game.sounds[this.game.active_sounds]['pop'].length)] ).play();
             }
 
