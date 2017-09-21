@@ -242,15 +242,6 @@
 
             }
 
-            this.pause = () => {
-                this.paused = true;
-                this.sounds_audio['pause'].play();
-            }
-
-            this.resume = () => {
-                this.paused = false;
-            }
-
             this.drawPanel = () => {
                 this.draw_cx.fillStyle = "#000000";
                 this.draw_cx.fillRect(0,this.gamearea.height,this.gamearea.width,85);
@@ -274,15 +265,35 @@
                 //     this.animationQueue.push(new animatedText(this, "BUBBADEEM!", callback = addStartButton));
                 // }
 
+                this.draw_cx.fillStyle = "#000";
                 this.draw_cx.font="135px Modak";
                 this.draw_cx.textAlign="center";
                 this.draw_cx.fillText("BUBBADEEM!", this.canvas.width / 2, 250);
                 
             }
 
+            this.pause = () => {
+                if (this.started) {
+                    this.paused = true;
+                    this.sounds_audio['pause'].play();    
+                } else {
+                    return false;
+                }
+            }
+
+            this.resume = () => {
+                this.paused = false;
+            }
+
             this.restart = () => {
                 this.bubbles.length = 0;
                 this.started = true;
+                this.paused = false;
+            }
+
+            this.stop = () => {
+                this.bubbles.length = 0;
+                this.started = false;
             }
         }
 
