@@ -6,8 +6,124 @@
     [Gameloop - The Correct Way](https://coderwall.com/p/iygcpa/gameloop-the-correct-way)
     [Change SVG fill colour to Canvas](https://stackoverflow.com/questions/27596652/change-svg-fill-color-and-then-draw-to-canvas)
     -->
-    <link href="https://fonts.googleapis.com/css?family=Modak" rel="stylesheet">
     <style type="text/css">
+
+    /* modak-regular - latin */
+    @font-face {
+        font-family: 'Modak';
+        font-style: normal;
+        font-weight: 400;
+        src: local('Modak'),
+            url('resources/fonts/modak-v2-latin-regular.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+            url('resources/fonts/modak-v2-latin-regular.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+    }/* roboto-100 - latin */
+    @font-face {
+        font-family: 'Roboto';
+        font-style: normal;
+        font-weight: 100;
+        src: local('Roboto Thin'), local('Roboto-Thin'),
+            url('resources/fonts/roboto-v16-latin-100.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+            url('resources/fonts/roboto-v16-latin-100.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+    }
+    /* roboto-100italic - latin */
+    @font-face {
+        font-family: 'Roboto';
+        font-style: italic;
+        font-weight: 100;
+        src: local('Roboto Thin Italic'), local('Roboto-ThinItalic'),
+            url('resources/fonts/roboto-v16-latin-100italic.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+            url('resources/fonts/roboto-v16-latin-100italic.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+    }
+    /* roboto-300 - latin */
+    @font-face {
+        font-family: 'Roboto';
+        font-style: normal;
+        font-weight: 300;
+        src: local('Roboto Light'), local('Roboto-Light'),
+            url('resources/fonts/roboto-v16-latin-300.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+            url('resources/fonts/roboto-v16-latin-300.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+    }
+    /* roboto-300italic - latin */
+    @font-face {
+        font-family: 'Roboto';
+        font-style: italic;
+        font-weight: 300;
+        src: local('Roboto Light Italic'), local('Roboto-LightItalic'),
+            url('resources/fonts/roboto-v16-latin-300italic.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+            url('resources/fonts/roboto-v16-latin-300italic.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+    }
+    /* roboto-regular - latin */
+    @font-face {
+        font-family: 'Roboto';
+        font-style: normal;
+        font-weight: 400;
+        src: local('Roboto'), local('Roboto-Regular'),
+            url('resources/fonts/roboto-v16-latin-regular.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+            url('resources/fonts/roboto-v16-latin-regular.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+    }
+    /* roboto-italic - latin */
+    @font-face {
+        font-family: 'Roboto';
+        font-style: italic;
+        font-weight: 400;
+        src: local('Roboto Italic'), local('Roboto-Italic'),
+            url('resources/fonts/roboto-v16-latin-italic.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+            url('resources/fonts/roboto-v16-latin-italic.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+    }
+    /* roboto-500 - latin */
+    @font-face {
+        font-family: 'Roboto';
+        font-style: normal;
+        font-weight: 500;
+        src: local('Roboto Medium'), local('Roboto-Medium'),
+            url('resources/fonts/roboto-v16-latin-500.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+            url('resources/fonts/roboto-v16-latin-500.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+    }
+    /* roboto-500italic - latin */
+    @font-face {
+        font-family: 'Roboto';
+        font-style: italic;
+        font-weight: 500;
+        src: local('Roboto Medium Italic'), local('Roboto-MediumItalic'),
+            url('resources/fonts/roboto-v16-latin-500italic.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+            url('resources/fonts/roboto-v16-latin-500italic.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+    }
+    /* roboto-700 - latin */
+    @font-face {
+        font-family: 'Roboto';
+        font-style: normal;
+        font-weight: 700;
+        src: local('Roboto Bold'), local('Roboto-Bold'),
+            url('resources/fonts/roboto-v16-latin-700.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+            url('resources/fonts/roboto-v16-latin-700.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+    }
+    /* roboto-700italic - latin */
+    @font-face {
+        font-family: 'Roboto';
+        font-style: italic;
+        font-weight: 700;
+        src: local('Roboto Bold Italic'), local('Roboto-BoldItalic'),
+            url('resources/fonts/roboto-v16-latin-700italic.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+            url('resources/fonts/roboto-v16-latin-700italic.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+    }
+    /* roboto-900 - latin */
+    @font-face {
+        font-family: 'Roboto';
+        font-style: normal;
+        font-weight: 900;
+        src: local('Roboto Black'), local('Roboto-Black'),
+            url('resources/fonts/roboto-v16-latin-900.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+            url('resources/fonts/roboto-v16-latin-900.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+    }
+    /* roboto-900italic - latin */
+    @font-face {
+        font-family: 'Roboto';
+        font-style: italic;
+        font-weight: 900;
+        src: local('Roboto Black Italic'), local('Roboto-BlackItalic'),
+            url('resources/fonts/roboto-v16-latin-900italic.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+            url('resources/fonts/roboto-v16-latin-900italic.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+    }
 
     html {
         min-height: 100vh;
@@ -80,12 +196,14 @@
                 'bubbadeem' : {
                     'intro' : 'intro.mp3',
                     'pause' : 'pause.mp3',
+                    'start' : 'start.mp3',
                     'pop' : [
                         'pop.mp3'
                     ]
                 },
                 'norah' : {
                     'intro' : 'intro.mp3',
+                    'start' : 'start.mp3',
                     'pause' : 'pause.mp3',
                     'pop' : [
                         'pop.mp3',
@@ -106,8 +224,8 @@
             this.bubbles_missed = 0;
             this.started = false;
             this.paused = false;
-            this.animationQueue = new Array();
             this.ticks = 0;
+            this.lang = 'en';
 
             if (settings !== null) {
                 if ('fps' in settings) {
@@ -137,7 +255,15 @@
                 if ('max_bubble_speed' in settings) {
                     this.max_bubble_speed = settings['max_bubble_speed'];
                 }
+
+                if ('lang' in settings) {
+                    this.lang = settings['lang'];
+                }
             }
+
+            var script = document.createElement('script');
+            script.src = 'resources/lang/'+ this.lang +'.js';
+            document.head.appendChild(script); //or something of the likes
 
             this.fullscreenify = () => {
                 var style = this.canvas.getAttribute('style') || '';
@@ -154,7 +280,6 @@
 
             this.clickPopListener = (event) => {
                 // console.log(event.offsetX + " " + event.offsetY);
-
                 if (!this.paused && this.started) {
                     if (event.offsetY < this.gamearea.height) {
                         for (i = 0; i < this.bubbles.length; i++) {
@@ -164,6 +289,13 @@
                                 break;
                             }
                         }
+                    }
+                }
+
+                if (!this.started) {
+                    // Detect click on start button
+                    if ( (650 > event.offsetX && event.offsetX > 350) && (412 > event.offsetY && event.offsetY > 300) ) {
+                        this.restart();
                     }
                 }
             }
@@ -183,18 +315,13 @@
                     this.bubble_images.push(image);
                 }
 
-                this.sounds_audio['pop'] = new Array();
-                for (i = 0; i < this.sounds[this.active_sounds]['pop'].length; i++) {
-                    var audio = new Audio('resources/sound/' + this.active_sounds + '/pop/' + this.sounds[this.active_sounds]['pop'][i]);
-                    this.sounds_audio['pop'].push(audio);
-                }
-
                 this.sounds_audio['intro'] = new Audio('resources/sound/' + this.active_sounds + '/' + this.sounds[this.active_sounds]['intro']);
                 this.sounds_audio['pause'] = new Audio('resources/sound/' + this.active_sounds + '/' + this.sounds[this.active_sounds]['pause']);
+                this.sounds_audio['start'] = new Audio('resources/sound/' + this.active_sounds + '/' + this.sounds[this.active_sounds]['start']);
             }
 
             this.createBubbleCheck = (max_bubbles_override = null, fullscreen = false) => {
-                
+
                 var max_bubbles = (max_bubbles_override !== null) ? max_bubbles_override : this.max_bubbles;
 
                 if (this.bubbles.length < max_bubbles) {
@@ -232,10 +359,6 @@
                         this.drawStartScreen();
                     }
 
-                    // for (i = 0; i < this.animationQueue.length; i++){
-                    //     this.animationQueue[i].draw();
-                    // }
-
                     this.lastTime = this.currentTime - (this.delta % this.interval);
                     this.ticks++;
                 }
@@ -257,7 +380,7 @@
             }
 
             this.drawStartScreen = () => {
-                
+
                 this.createBubbleCheck(63, true);
                 this.drawBubbles();
 
@@ -268,14 +391,24 @@
                 this.draw_cx.fillStyle = "#000";
                 this.draw_cx.font="135px Modak";
                 this.draw_cx.textAlign="center";
-                this.draw_cx.fillText("BUBBADEEM!", this.canvas.width / 2, 250);
-                
+                this.draw_cx.fillText(language['game'], this.canvas.width / 2, 250);
+
+                var button_code = 'data:image/svg+xml;charset=utf-8,<?xml version="1.0" encoding="UTF-8" standalone="no"?>                <svg                   xmlns:dc="http://purl.org/dc/elements/1.1/"                   xmlns:cc="http://creativecommons.org/ns#"                   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"                   xmlns:svg="http://www.w3.org/2000/svg"                   xmlns="http://www.w3.org/2000/svg"                   xmlns:xlink="http://www.w3.org/1999/xlink"                   id="svg1520"                   version="1.1"                   viewBox="0 0 79.374016 29.66188"                   height="29.66188mm"                   width="79.374016mm">                  <defs                     id="defs1514">                    <linearGradient                       id="linearGradient2137">                      <stop                         style="stop-color:#ffffff;stop-opacity:0.5"                         offset="0"                         id="stop2133" />                      <stop                         style="stop-color:#4a4a4a;stop-opacity:0"                         offset="1"                         id="stop2135" />                    </linearGradient>                    <linearGradient                       gradientUnits="userSpaceOnUse"                       y2="44.97963"                       x2="87.169624"                       y1="57.274029"                       x1="87.169624"                       id="linearGradient2107"                       xlink:href="#linearGradient2137" />                  </defs>                  <metadata                     id="metadata1517">                    <rdf:RDF>                      <cc:Work                         rdf:about="">                        <dc:format>image/svg+xml</dc:format>                        <dc:type                           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />                        <dc:title></dc:title>                      </cc:Work>                    </rdf:RDF>                  </metadata>                  <g                     style="display:inline"                     id="layer3">                    <rect                       ry="2.5480402"                       rx="2.610929"                       y="0.94686645"                       x="0.93209398"                       height="27.76815"                       width="77.509819"                       id="rect837-6-0"                       style="opacity:1;fill:#7442fb;fill-opacity:0.5;stroke:none;stroke-width:0.80684924;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />                  </g>                  <g                     transform="translate(-51.02728,-29.680965)"                     id="layer1">                    <rect                       ry="2.645833"                       rx="2.6458333"                       y="30.094965"                       x="51.44128"                       height="28.833881"                       width="78.546013"                       id="rect837"                       style="opacity:1;fill:none;fill-opacity:1;stroke:#ffffff;stroke-width:0.82800001;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.98009949" />                    <rect                       ry="2.5480402"                       rx="2.610929"                       y="30.627832"                       x="51.959377"                       height="27.76815"                       width="77.509819"                       id="rect837-6"                       style="opacity:1;fill:url(#linearGradient2107);fill-opacity:1;stroke:#000000;stroke-width:0.80684924;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;" />                  </g>                </svg>';
+
+                var button_img = new Image();
+                var button_img_data = button_code;
+                // var button_img_data = button_code.replace(/#e82444/g, this.colour_options[i]);
+                button_img.src = button_img_data;
+                this.draw_cx.drawImage(button_img, 350, 300, 300, 112);
+
+                this.draw_cx.font = "700 48px Roboto";
+                this.draw_cx.fillText(language['start'], this.canvas.width / 2, 373);
             }
 
             this.pause = () => {
                 if (this.started) {
                     this.paused = true;
-                    this.sounds_audio['pause'].play();    
+                    this.sounds_audio['pause'].play();
                 } else {
                     return false;
                 }
@@ -289,61 +422,14 @@
                 this.bubbles.length = 0;
                 this.started = true;
                 this.paused = false;
+                this.sounds_audio['start'].play();
             }
 
             this.stop = () => {
                 this.bubbles.length = 0;
                 this.started = false;
+                this.paused = false;
             }
-        }
-
-        function animatedText (game, text = "Placeholder", alignment = "center", font = "135px Modak", colour = "#000", speed = 5, start = Array(0,0), stop = Array(400,400), callback = false) {
-            
-            if (!game instanceof Bubbadeem)
-                return false;
-
-            this.game = game;
-            this.text = text;
-            this.alignment = alignment;
-            this.font = font;
-            this.colour = colour;
-            this.speed = speed;
-            this.finished = false;
-            this.callback = callback;
-
-            if (start instanceof Array && stop instanceof Array) {
-                this.start = start;
-                this.stop = stop;
-            } else {
-                return false;
-            }
-
-            this.posX = start[0];
-            this.posY = start[1];
-
-            this.draw = () => {
-                this.game.draw_cx.font=this.font;
-                this.game.draw_cx.textAlign=this.alignment;
-                
-                if (!this.finished) {
-                    this.posX -= this.speed * Math.cos(this.path_angle * Math.PI / 180);
-                    this.posY -= this.speed * Math.sin(this.path_angle * Math.PI / 180);
-                }
-
-                console.log(this.posX);
-
-                this.game.draw_cx.fillText(this.text, this.posX, this.posY);
-            }
-
-            if (Array(this.posX, this.posY) == this.stop && !this.finished) {
-                this.finished = true;
-
-                if (callback) {
-                    callback();
-                }
-            }
-
-            
         }
 
         function Bubble (game, fullscreen) {
@@ -367,9 +453,9 @@
                 this.speed = this.base_speed + (Math.random() * (this.base_speed * this.game.max_bubble_speed));
                 this.posX = (Math.random() * canvas.width) + 1;
                 if (this.fullscreen) {
-                    this.posY = this.game.canvas.height + (this.size / 2);    
+                    this.posY = this.game.canvas.height + (this.size / 2);
                 } else {
-                    this.posY = this.game.gamearea.height + (this.size / 2);    
+                    this.posY = this.game.gamearea.height + (this.size / 2);
                 }
                 this.image = this.game.bubble_images[Math.floor(Math.random() * this.game.bubble_images.length)];
                 // Random between 65 and 125 degrees
@@ -435,7 +521,8 @@
             }
 
             this.pop_audio = () => {
-                this.game.sounds_audio['pop'][Math.floor(Math.random() * this.game.sounds_audio['pop'].length)].play();
+
+                sound = new Audio('resources/sound/' + this.game.active_sounds + '/pop/' + this.game.sounds[this.game.active_sounds]['pop'][Math.floor(Math.random() * this.game.sounds[this.game.active_sounds]['pop'].length)] ).play();
             }
 
             this.remove = () => {
