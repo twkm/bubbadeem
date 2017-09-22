@@ -3,6 +3,8 @@
 <head>
     <title>Bubbadeem</title>
     <!--
+    [Live Game](https://cdn.rawgit.com/twkm/bubbadeem/dcb7f8d1/index.html)
+    [Development Preview](https://rawgit.com/twkm/bubbadeem/master/index.html)
     [Gameloop - The Correct Way](https://coderwall.com/p/iygcpa/gameloop-the-correct-way)
     [Change SVG fill colour to Canvas](https://stackoverflow.com/questions/27596652/change-svg-fill-color-and-then-draw-to-canvas)
     -->
@@ -167,9 +169,14 @@
 
         function Bubbadeem(canvas, settings = null) {
             this.canvas = canvas;
+            this.canvas_base_width = 1000;
+            this.size_multiplier = this.canvas.width / this.canvas_base_width;
+            this.sizeUtil = (size) => {
+                return size * this.size_multiplier;
+            }
             this.gamearea = {
-                'width' : 1000,
-                'height' : 477
+                'width' : this.sizeUtil(1000),
+                'height' : this.sizeUtil(477)
             };
             this.draw_cx = null;
             this.fps = 30;
@@ -179,7 +186,7 @@
             this.current_time = 0;
             this.delta = 0;
             this.max_bubbles = 30;
-            this.max_bubble_speed = 3;
+            this.max_bubble_speed = this.sizeUtil(3);
             this.bubbles = new Array();
             this.bubble_image_code='data:image/svg+xml;charset=utf-8,<?xml version="1.0" encoding="UTF-8" standalone="no"?>\n                <!-- Created with Inkscape (http://www.inkscape.org/) -->\n\n                <svg\n                   xmlns:dc="http://purl.org/dc/elements/1.1/"\n                   xmlns:cc="http://creativecommons.org/ns#"\n                   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"\n                   xmlns:svg="http://www.w3.org/2000/svg"\n                   xmlns="http://www.w3.org/2000/svg"\n                   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"\n                   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"\n                   width="63.855083"\n                   height="63.855083"\n                   viewBox="0 0 16.894991 16.894991"\n                   version="1.1"\n                   id="svg8"\n                   inkscape:version="0.92.2 5c3e80d, 2017-08-06"\n                   sodipodi:docname="bubble.svg">\n                  <defs\n                     id="defs2" />\n                  <sodipodi:namedview\n                     id="base"\n                     pagecolor="#ffffff"\n                     bordercolor="#666666"\n                     borderopacity="1.0"\n                     inkscape:pageopacity="0.0"\n                     inkscape:pageshadow="2"\n                     inkscape:zoom="7.9195959"\n                     inkscape:cx="70.356621"\n                     inkscape:cy="37.308622"\n                     inkscape:document-units="mm"\n                     inkscape:current-layer="layer1"\n                     showgrid="false"\n                     units="px"\n                     inkscape:window-width="1920"\n                     inkscape:window-height="810"\n                     inkscape:window-x="1763"\n                     inkscape:window-y="134"\n                     inkscape:window-maximized="0" />\n                  <metadata\n                     id="metadata5">\n                    <rdf:RDF>\n                      <cc:Work\n                         rdf:about="">\n                        <dc:format>image/svg+xml</dc:format>\n                        <dc:type\n                           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />\n                        <dc:title></dc:title>\n                      </cc:Work>\n                    </rdf:RDF>\n                  </metadata>\n                  <g\n                     inkscape:label="Layer 1"\n                     inkscape:groupmode="layer"\n                     id="layer1"\n                     transform="translate(-52.222686,-180.04106)">\n                    <path\n                       style="opacity:0.25;fill:#000000;fill-opacity:0.10499998;stroke:none;stroke-width:2.70583963;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"\n                       d="m 256.39648,137.52734 a 17.855302,42.143408 52.167749 0 0 -1.30468,0.35157 35.034683,35.034683 0 0 1 0.47851,5.69336 35.034683,35.034683 0 0 1 -35.03515,35.0332 35.034683,35.034683 0 0 1 -9.63086,-1.41406 30.927541,30.927541 0 0 0 18.40039,6.11328 30.927541,30.927541 0 0 0 30.92773,-30.92578 30.927541,30.927541 0 0 0 -3.83594,-14.85157 z"\n                       transform="matrix(0.26458333,0,0,0.26458333,0,148.17186)"\n                       id="path867"\n                       inkscape:connector-curvature="0" />\n                    <circle\n                       style="opacity:0.25;fill:#e82444;fill-opacity:1;stroke:none;stroke-width:0.52916676;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"\n                       id="path815-7"\n                       cx="60.670181"\n                       cy="188.48856"\n                       r="8.1829119" />\n                    <ellipse\n                       style="opacity:0.25;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.80988121;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"\n                       id="path832-3"\n                       cx="-12.371008"\n                       cy="193.25958"\n                       rx="4.4046226"\n                       ry="3.3429554"\n                       transform="rotate(-21.18424)" />\n                    <ellipse\n                       style="opacity:0.25;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.52916664;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"\n                       id="path832"\n                       cx="13.078985"\n                       cy="192.42632"\n                       rx="2.9399648"\n                       ry="2.1381562"\n                       transform="rotate(-13.61174)" />\n                    <ellipse\n                       style="opacity:0.25;fill:#000000;fill-opacity:0.10499998;stroke:none;stroke-width:0.80988121;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"\n                       id="path832-3-8"\n                       cx="27.201355"\n                       cy="-200.60611"\n                       rx="4.4046226"\n                       ry="3.3429551"\n                       transform="rotate(154.19452)" />\n                    <ellipse\n                       style="opacity:0.25;fill:#000000;fill-opacity:0.10499998;stroke:none;stroke-width:0.52916664;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"\n                       id="path832-2"\n                       cx="0.40236369"\n                       cy="-203.21933"\n                       rx="2.9399648"\n                       ry="2.1381562"\n                       transform="rotate(161.76702)" />\n                    <circle\n                       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.5291667;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"\n                       id="path815"\n                       cx="60.670181"\n                       cy="188.48856"\n                       r="8.1829119" />\n                  </g>\n                </svg>\n';
             this.colour_options = [
@@ -233,28 +240,28 @@
             this.lang = 'en';
             this.pause_menu = {
                 'buttons' : {
-                    'dimensions' : [475,65],
+                    'dimensions' : [this.sizeUtil(475),this.sizeUtil(65)],
                     'resume' : {
-                        'position' : [262, 124]
+                        'position' : [this.sizeUtil(262), this.sizeUtil(124)]
                     },
                     'restart' : {
-                        'position' : [262, 202]
+                        'position' : [this.sizeUtil(262), this.sizeUtil(202)]
                     },
                     'quit' : {
-                        'position' : [262,279]
+                        'position' : [this.sizeUtil(262),this.sizeUtil(279)]
                     }
                 },
                 'panel' : {
                     'image': 'resources/svg/pause_background.svg',
-                    'position' : [250, 34],
-                    'dimensions' : [500, 406]
+                    'position' : [this.sizeUtil(250), this.sizeUtil(34)],
+                    'dimensions' : [this.sizeUtil(500), this.sizeUtil(406)]
                 }
             };
             this.panel = {
                 'buttons' : {
                     'pause' : {
-                        'position' : [927, 487],
-                        'dimensions': [65, 65]
+                        'position' : [this.sizeUtil(927), this.sizeUtil(487)],
+                        'dimensions': [this.sizeUtil(65), this.sizeUtil(65)]
                     }
                 }
             }
@@ -352,7 +359,7 @@
 
                 if (!this.started) {
                     // Detect click on start button
-                    if ( (650 > event.offsetX && event.offsetX > 350) && (412 > event.offsetY && event.offsetY > 300) ) {
+                    if ( (this.sizeUtil(650) > event.offsetX && event.offsetX > this.sizeUtil(350)) && (this.sizeUtil(412) > event.offsetY && event.offsetY > this.sizeUtil(300)) ) {
                         this.restart();
                     }
                 }
@@ -451,32 +458,32 @@
 
                 var panel_bg_img = new Image();
                 panel_bg_img.src = 'resources/svg/pause_background.svg';
-                this.draw_cx.drawImage(panel_bg_img, 250, 34, 500, 406);
+                this.draw_cx.drawImage(panel_bg_img, this.sizeUtil(250), this.sizeUtil(34), this.sizeUtil(500), this.sizeUtil(406));
 
                 var button_img = new Image();
                 button_img.src = 'resources/svg/pause_button.svg';
 
                 this.draw_cx.fillStyle = "#FFF";
-                this.draw_cx.font = "700 48px Roboto";
-                this.draw_cx.fillText(language['paused'], this.canvas.width / 2, this.pause_menu.panel.position[1] + 64);
+                this.draw_cx.font = "700 "+ this.sizeUtil(48) +"px Roboto";
+                this.draw_cx.fillText(language['paused'], this.canvas.width / 2, this.pause_menu.panel.position[1] + this.sizeUtil(64));
 
                 this.draw_cx.fillStyle = "#000";
-                this.draw_cx.font = "700 48px Roboto";
+                this.draw_cx.font = "700 "+ this.sizeUtil(48) +"px Roboto";
                 // Resume
                 this.draw_cx.drawImage(button_img, this.pause_menu.buttons.resume.position[0], this.pause_menu.buttons.resume.position[1], this.pause_menu.buttons.dimensions[0], this.pause_menu.buttons.dimensions[1]);
-                this.draw_cx.fillText(language['resume'], this.canvas.width / 2, this.pause_menu.buttons.resume.position[1] + 49);
+                this.draw_cx.fillText(language['resume'], this.canvas.width / 2, this.pause_menu.buttons.resume.position[1] + this.sizeUtil(49));
                 // Restart
                 this.draw_cx.drawImage(button_img, this.pause_menu.buttons.restart.position[0], this.pause_menu.buttons.restart.position[1], this.pause_menu.buttons.dimensions[0], this.pause_menu.buttons.dimensions[1]);
-                this.draw_cx.fillText(language['restart'], this.canvas.width / 2, this.pause_menu.buttons.restart.position[1] + 49);
+                this.draw_cx.fillText(language['restart'], this.canvas.width / 2, this.pause_menu.buttons.restart.position[1] + this.sizeUtil(49));
                 // Quit
                 this.draw_cx.drawImage(button_img, this.pause_menu.buttons.quit.position[0], this.pause_menu.buttons.quit.position[1], this.pause_menu.buttons.dimensions[0], this.pause_menu.buttons.dimensions[1]);
-                this.draw_cx.font = "700 48px Roboto";
-                this.draw_cx.fillText(language['quit'], this.canvas.width / 2, this.pause_menu.buttons.quit.position[1] + 49);
+                this.draw_cx.font = "700 " +this.sizeUtil(48) +"px Roboto";
+                this.draw_cx.fillText(language['quit'], this.canvas.width / 2, this.pause_menu.buttons.quit.position[1] + this.sizeUtil(49));
             }
 
             this.drawPanel = () => {
                 this.draw_cx.fillStyle = "#000000";
-                this.draw_cx.fillRect(0,this.gamearea.height,this.gamearea.width,85);
+                this.draw_cx.fillRect(0,this.gamearea.height,this.gamearea.width,this.sizeUtil(85));
 
                 if (!this.paused) {
                     // Draw pause button
@@ -490,30 +497,30 @@
 
                 // Score per second
                 this.draw_cx.fillStyle = "#FFF";
-                this.draw_cx.font="18px Roboto";
+                this.draw_cx.font= this.sizeUtil(18) +"px Roboto";
                 this.draw_cx.textAlign="left";
-                this.draw_cx.fillText(language['score_per_second']+':', 10, this.canvas.height - 60);
+                this.draw_cx.fillText(language['score_per_second']+':', this.sizeUtil(10), this.canvas.height - this.sizeUtil(60));
 
-                this.draw_cx.font="900 40px Roboto";
-                this.draw_cx.fillText(this.sps, 10, this.canvas.height - 16);
+                this.draw_cx.font="900 "+ this.sizeUtil(40) +"px Roboto";
+                this.draw_cx.fillText(this.sps, this.sizeUtil(10), this.canvas.height - this.sizeUtil(16));
 
                 // Highest Score per second
                 this.draw_cx.fillStyle = "#FFF";
-                this.draw_cx.font="18px Roboto";
+                this.draw_cx.font= this.sizeUtil(18) +"px Roboto";
                 this.draw_cx.textAlign="left";
-                this.draw_cx.fillText(language['highest_score_per_second']+':', 150, this.canvas.height - 60);
+                this.draw_cx.fillText(language['highest_score_per_second']+':', this.sizeUtil(150), this.canvas.height - this.sizeUtil(60));
 
-                this.draw_cx.font="900 40px Roboto";
-                this.draw_cx.fillText(this.highest_sps, 150, this.canvas.height - 16);
+                this.draw_cx.font="900 "+ this.sizeUtil(40) +"px Roboto";
+                this.draw_cx.fillText(this.highest_sps, this.sizeUtil(150), this.canvas.height - this.sizeUtil(16));
 
                 // Score
                 this.draw_cx.fillStyle = "#FFF";
-                this.draw_cx.font="18px Roboto";
+                this.draw_cx.font= this.sizeUtil(18) +"px Roboto";
                 this.draw_cx.textAlign="left";
-                this.draw_cx.fillText(language['score']+':', 290, this.canvas.height - 60);
+                this.draw_cx.fillText(language['score']+':', this.sizeUtil(290), this.canvas.height - this.sizeUtil(60));
 
-                this.draw_cx.font="900 40px Roboto";
-                this.draw_cx.fillText(this.score, 290, this.canvas.height - 16);
+                this.draw_cx.font="900 "+ this.sizeUtil(40) +"px Roboto";
+                this.draw_cx.fillText(this.score, this.sizeUtil(290), this.canvas.height - this.sizeUtil(16));
 
             }
 
@@ -527,22 +534,22 @@
                 // }
 
                 this.draw_cx.fillStyle = "#000";
-                this.draw_cx.font="135px Modak";
+                this.draw_cx.font= this.sizeUtil(135) +"px Modak";
                 this.draw_cx.textAlign="center";
-                this.draw_cx.fillText(language['game'], this.canvas.width / 2, 250);
-                this.draw_cx.lineWidth = 4;
+                this.draw_cx.fillText(language['game'], this.canvas.width / 2, this.sizeUtil(250));
+                this.draw_cx.lineWidth = this.sizeUtil(4);
                 this.draw_cx.strokeStyle = "#FFF";
-                this.draw_cx.strokeText(language['game'], this.canvas.width / 2, 250);
+                this.draw_cx.strokeText(language['game'], this.canvas.width / 2, this.sizeUtil(250));
 
                 var button_code = 'data:image/svg+xml;charset=utf-8,<?xml version="1.0" encoding="UTF-8" standalone="no"?>                <svg                   xmlns:dc="http://purl.org/dc/elements/1.1/"                   xmlns:cc="http://creativecommons.org/ns#"                   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"                   xmlns:svg="http://www.w3.org/2000/svg"                   xmlns="http://www.w3.org/2000/svg"                   xmlns:xlink="http://www.w3.org/1999/xlink"                   id="svg1520"                   version="1.1"                   viewBox="0 0 79.374016 29.66188"                   height="29.66188mm"                   width="79.374016mm">                  <defs                     id="defs1514">                    <linearGradient                       id="linearGradient2137">                      <stop                         style="stop-color:#ffffff;stop-opacity:0.5"                         offset="0"                         id="stop2133" />                      <stop                         style="stop-color:#4a4a4a;stop-opacity:0"                         offset="1"                         id="stop2135" />                    </linearGradient>                    <linearGradient                       gradientUnits="userSpaceOnUse"                       y2="44.97963"                       x2="87.169624"                       y1="57.274029"                       x1="87.169624"                       id="linearGradient2107"                       xlink:href="#linearGradient2137" />                  </defs>                  <metadata                     id="metadata1517">                    <rdf:RDF>                      <cc:Work                         rdf:about="">                        <dc:format>image/svg+xml</dc:format>                        <dc:type                           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />                        <dc:title></dc:title>                      </cc:Work>                    </rdf:RDF>                  </metadata>                  <g                     style="display:inline"                     id="layer3">                    <rect                       ry="2.5480402"                       rx="2.610929"                       y="0.94686645"                       x="0.93209398"                       height="27.76815"                       width="77.509819"                       id="rect837-6-0"                       style="opacity:1;fill:#7442fb;fill-opacity:0.5;stroke:none;stroke-width:0.80684924;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />                  </g>                  <g                     transform="translate(-51.02728,-29.680965)"                     id="layer1">                    <rect                       ry="2.645833"                       rx="2.6458333"                       y="30.094965"                       x="51.44128"                       height="28.833881"                       width="78.546013"                       id="rect837"                       style="opacity:1;fill:none;fill-opacity:1;stroke:#ffffff;stroke-width:0.82800001;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.98009949" />                    <rect                       ry="2.5480402"                       rx="2.610929"                       y="30.627832"                       x="51.959377"                       height="27.76815"                       width="77.509819"                       id="rect837-6"                       style="opacity:1;fill:url(#linearGradient2107);fill-opacity:1;stroke:#000000;stroke-width:0.80684924;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;" />                  </g>                </svg>';
 
                 var button_img = new Image();
                 // var button_img_data = button_code.replace(/#e82444/g, this.colour_options[i]);
                 button_img.src = 'resources/svg/button.svg';
-                this.draw_cx.drawImage(button_img, 350, 300, 300, 112);
+                this.draw_cx.drawImage(button_img, this.sizeUtil(350), this.sizeUtil(300), this.sizeUtil(300), this.sizeUtil(112));
 
-                this.draw_cx.font = "700 48px Roboto";
-                this.draw_cx.fillText(language['start'], this.canvas.width / 2, 373);
+                this.draw_cx.font = "700 "+ this.sizeUtil(48) +"px Roboto";
+                this.draw_cx.fillText(language['start'], this.canvas.width / 2, this.sizeUtil(373));
             }
 
             this.pause = () => {
@@ -581,8 +588,8 @@
 
         function Bubble (game, fullscreen) {
             this.game = game;
-            this.base_size = 65;
-            this.base_speed = 30 / this.game.fps;
+            this.base_size = this.game.sizeUtil(65);
+            this.base_speed = this.game.sizeUtil(30) / this.game.fps;
             this.posX = false;
             this.posY = false;
             this.popped = false;
@@ -594,10 +601,10 @@
             this.fullscreen = fullscreen;
 
             this.setup = (canvas) => {
-                this.size = this.base_size + (Math.random() * 65) + 1;
+                this.size = this.base_size + (Math.random() * this.game.sizeUtil(65)) + 1;
                 // random between 0 and 4
                 this.speed = this.base_speed + (Math.random() * (this.base_speed * this.game.max_bubble_speed));
-                this.posX = (Math.random() * canvas.width) + 1;
+                this.posX = (Math.random() * canvas.width) + this.game.sizeUtil(1);
                 if (this.fullscreen) {
                     this.posY = this.game.canvas.height + (this.size / 2);
                 } else {
@@ -744,6 +751,16 @@
     </script>
 </head>
 <body oncontextmenu="return false;">
-    <canvas id="game_canvas" width="1000" height="562"></canvas>
+    <!--
+    Uncomment the canvas resolution you want to use below.
+    There should only be one <canvas> element uncommented.
+    Custom sizes can be entered, just make sure it is a 16:9 ratio
+    -->
+    <!-- <canvas id="game_canvas" width="3840" height="2160"></canvas> -->
+    <!-- <canvas id="game_canvas" width="2560" height="1440"></canvas> -->
+    <canvas id="game_canvas" width="1920" height="1080"></canvas>
+    <!-- <canvas id="game_canvas" width="1366" height="768"></canvas> -->
+    <!-- <canvas id="game_canvas" width="1280" height="720"></canvas> -->
+    <!-- <canvas id="game_canvas" width="1000" height="562"></canvas> -->
 </body>
 </html>
