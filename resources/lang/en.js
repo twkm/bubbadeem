@@ -7,5 +7,7 @@ var language = {
     'highest_score_per_second': 'Highest SPS',
     'resume' : 'Resume',
     'restart' : 'New Game',
-    'quit' : 'Quit'
+    'quit' : 'Quit',
+    'made_with' : 'Made with ',
+    'by' : 'by'
 }

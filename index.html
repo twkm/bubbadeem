@@ -264,7 +264,8 @@
                         'dimensions': [this.sizeUtil(65), this.sizeUtil(65)]
                     }
                 }
-            }
+            };
+            this.made_by = 'Dad';
 
             if (settings !== null) {
                 if ('fps' in settings) {
@@ -297,6 +298,10 @@
 
                 if ('lang' in settings) {
                     this.lang = settings['lang'];
+                }
+
+                if ('made_by' in settings) {
+                    this.made_by = settings['made_by'];
                 }
             }
 
@@ -361,6 +366,11 @@
                     // Detect click on start button
                     if ( (this.sizeUtil(650) > event.offsetX && event.offsetX > this.sizeUtil(350)) && (this.sizeUtil(412) > event.offsetY && event.offsetY > this.sizeUtil(300)) ) {
                         this.restart();
+                    }
+
+                    // Detect click on Github icon
+                    if ( (this.sizeUtil(1000) > event.offsetX && event.offsetX > this.sizeUtil(1000 - 50)) && (this.sizeUtil(562) > event.offsetY && event.offsetY > this.sizeUtil(562 - 50)) ) {
+                        window.open('https://github.com/twkm/bubbadeem');
                     }
                 }
 
@@ -541,6 +551,8 @@
                 this.draw_cx.strokeStyle = "#FFF";
                 this.draw_cx.strokeText(language['game'], this.canvas.width / 2, this.sizeUtil(250));
 
+                // Can use the below button code to change background colour, like we do with the bubbles, rather than
+                // using the button.svg file.
                 var button_code = 'data:image/svg+xml;charset=utf-8,<?xml version="1.0" encoding="UTF-8" standalone="no"?>                <svg                   xmlns:dc="http://purl.org/dc/elements/1.1/"                   xmlns:cc="http://creativecommons.org/ns#"                   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"                   xmlns:svg="http://www.w3.org/2000/svg"                   xmlns="http://www.w3.org/2000/svg"                   xmlns:xlink="http://www.w3.org/1999/xlink"                   id="svg1520"                   version="1.1"                   viewBox="0 0 79.374016 29.66188"                   height="29.66188mm"                   width="79.374016mm">                  <defs                     id="defs1514">                    <linearGradient                       id="linearGradient2137">                      <stop                         style="stop-color:#ffffff;stop-opacity:0.5"                         offset="0"                         id="stop2133" />                      <stop                         style="stop-color:#4a4a4a;stop-opacity:0"                         offset="1"                         id="stop2135" />                    </linearGradient>                    <linearGradient                       gradientUnits="userSpaceOnUse"                       y2="44.97963"                       x2="87.169624"                       y1="57.274029"                       x1="87.169624"                       id="linearGradient2107"                       xlink:href="#linearGradient2137" />                  </defs>                  <metadata                     id="metadata1517">                    <rdf:RDF>                      <cc:Work                         rdf:about="">                        <dc:format>image/svg+xml</dc:format>                        <dc:type                           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />                        <dc:title></dc:title>                      </cc:Work>                    </rdf:RDF>                  </metadata>                  <g                     style="display:inline"                     id="layer3">                    <rect                       ry="2.5480402"                       rx="2.610929"                       y="0.94686645"                       x="0.93209398"                       height="27.76815"                       width="77.509819"                       id="rect837-6-0"                       style="opacity:1;fill:#7442fb;fill-opacity:0.5;stroke:none;stroke-width:0.80684924;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />                  </g>                  <g                     transform="translate(-51.02728,-29.680965)"                     id="layer1">                    <rect                       ry="2.645833"                       rx="2.6458333"                       y="30.094965"                       x="51.44128"                       height="28.833881"                       width="78.546013"                       id="rect837"                       style="opacity:1;fill:none;fill-opacity:1;stroke:#ffffff;stroke-width:0.82800001;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.98009949" />                    <rect                       ry="2.5480402"                       rx="2.610929"                       y="30.627832"                       x="51.959377"                       height="27.76815"                       width="77.509819"                       id="rect837-6"                       style="opacity:1;fill:url(#linearGradient2107);fill-opacity:1;stroke:#000000;stroke-width:0.80684924;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;" />                  </g>                </svg>';
 
                 var button_img = new Image();
@@ -550,6 +562,28 @@
 
                 this.draw_cx.font = "700 "+ this.sizeUtil(48) +"px Roboto";
                 this.draw_cx.fillText(language['start'], this.canvas.width / 2, this.sizeUtil(373));
+
+                // Draw the "Made with love by..." text
+                this.draw_cx.textAlign="left";
+                this.draw_cx.font = "500 "+ this.sizeUtil(24) +"px Roboto";
+
+                var made_by_w = this.draw_cx.measureText(language['by'] + ' ' + this.made_by).width;
+                var made_with_w = this.draw_cx.measureText(language['made_with']).width;
+
+                var github_img = new Image();
+                github_img.src = 'resources/svg/github.svg';
+                var heart_img = new Image();
+                heart_img.src = 'resources/svg/heart.svg';
+
+                var current_x = this.sizeUtil(1000 - 10 - 30);
+                var image_y = this.sizeUtil(562 - 10 - 30);
+                var text_y = this.sizeUtil(562 - 16);
+
+                this.draw_cx.drawImage(github_img, current_x, image_y, this.sizeUtil(30), this.sizeUtil(30));
+                this.draw_cx.fillText(language['by'] + ' ' + this.made_by, current_x -= made_by_w + this.sizeUtil(10), text_y, made_by_w);
+                this.draw_cx.drawImage(heart_img, current_x -= this.sizeUtil(30 + 10), image_y, this.sizeUtil(30), this.sizeUtil(30));
+                this.draw_cx.fillText(language['made_with'], current_x -= made_with_w, text_y, made_with_w);
+
             }
 
             this.pause = () => {
