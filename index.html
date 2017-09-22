@@ -8,6 +8,7 @@
     -->
     <style type="text/css">
 
+    /* https://google-webfonts-helper.herokuapp.com/fonts */
     /* modak-regular - latin */
     @font-face {
         font-family: 'Modak';
@@ -203,7 +204,7 @@
                     ]
                 },
                 'norah' : {
-                    'intro' : 'intro.mp3',
+                    'intro' : 'intro-2.mp3',
                     'start' : 'start.mp3',
                     'pause' : 'pause.mp3',
                     'pop' : [
@@ -221,6 +222,8 @@
             this.active_sounds = 'bubbadeem';
             this.sounds_audio = new Array();
             this.score = 0;
+            this.sps = 0;
+            this.highest_sps = 0;
             this.bubbles_spawned = 0;
             this.bubbles_popped = 0;
             this.bubbles_missed = 0;
@@ -416,7 +419,7 @@
                     if (this.started) {
                         if (!this.paused) {
                             this.createBubbleCheck();
-                            this.game_time += this.delta;
+                            this.game_time += (this.delta % this.interval);
                         }
 
                         this.drawBubbles();
@@ -426,14 +429,13 @@
                             this.drawPauseMenu();
                         }
 
-
                     } else {
                         this.drawStartScreen();
                     }
 
-                    // console.log(this.game_time);
-                    // console.log('Score: '+this.score);
-                    // console.log('SPS: '+ this.score / (this.game_time / 1000));
+                    this.sps = Math.round(this.score / (this.game_time / 1000));
+                    if (this.sps > this.highest_sps)
+                        this.highest_sps = this.sps;
 
                     this.lastTime = this.currentTime - (this.delta % this.interval);
                     this.ticks++;
@@ -443,8 +445,9 @@
 
             this.drawPauseMenu = () => {
                 // Draw pause menu
+                this.draw_cx.textAlign="center";
                 this.draw_cx.fillStyle = "rgba(0, 0, 0, 0.75)";
-                this.draw_cx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+                this.draw_cx.fillRect(0, 0, this.gamearea.width, this.gamearea.height);
 
                 var panel_bg_img = new Image();
                 panel_bg_img.src = 'resources/svg/pause_background.svg';
@@ -481,6 +484,37 @@
                     pause_button.src = 'resources/svg/panel_pause_button.svg';
                     this.draw_cx.drawImage(pause_button, this.panel.buttons.pause.position[0], this.panel.buttons.pause.position[1], this.panel.buttons.pause.dimensions[0], this.panel.buttons.pause.dimensions[1]);
                 }
+
+                this.draw_cx.lineWidth = 0;
+                this.draw_cx.strokeStyle = null;
+
+                // Score per second
+                this.draw_cx.fillStyle = "#FFF";
+                this.draw_cx.font="18px Roboto";
+                this.draw_cx.textAlign="left";
+                this.draw_cx.fillText(language['score_per_second']+':', 10, this.canvas.height - 60);
+
+                this.draw_cx.font="900 40px Roboto";
+                this.draw_cx.fillText(this.sps, 10, this.canvas.height - 16);
+
+                // Highest Score per second
+                this.draw_cx.fillStyle = "#FFF";
+                this.draw_cx.font="18px Roboto";
+                this.draw_cx.textAlign="left";
+                this.draw_cx.fillText(language['highest_score_per_second']+':', 150, this.canvas.height - 60);
+
+                this.draw_cx.font="900 40px Roboto";
+                this.draw_cx.fillText(this.highest_sps, 150, this.canvas.height - 16);
+
+                // Score
+                this.draw_cx.fillStyle = "#FFF";
+                this.draw_cx.font="18px Roboto";
+                this.draw_cx.textAlign="left";
+                this.draw_cx.fillText(language['score']+':', 290, this.canvas.height - 60);
+
+                this.draw_cx.font="900 40px Roboto";
+                this.draw_cx.fillText(this.score, 290, this.canvas.height - 16);
+
             }
 
             this.drawStartScreen = () => {
@@ -530,6 +564,8 @@
                 this.bubbles_missed = 0;
                 this.bubbles_popped = 0;
                 this.score = 0;
+                this.sps = 0;
+                this.highest_sps = 0;
                 this.started = true;
                 this.paused = false;
                 this.sounds_audio['intro'].play();
