@@ -6,7 +6,7 @@ BUBBADEEM! is a simple HTML5 game I made to help my not-quite-two-year-old daugh
 
 BUBBADEEM! is supported by modern browsers which support ECMAScript 6 and HTML5. Works great in [Google Chrome](https://www.google.com/chrome/browser/desktop/index.html).
 
-[Play Now](https://cdn.rawgit.com/twkm/bubbadeem/9289487c/index.html)
+[Play Now](https://cdn.rawgit.com/twkm/bubbadeem/6f53130c/index.html)
 
 ## STEM for Kids
 
