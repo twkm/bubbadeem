@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Bubbadeem</title>
+    <!--
+    [Live Game](https://cdn.rawgit.com/twkm/bubbadeem/dcb7f8d1/index.html)
+    [Development Preview](https://rawgit.com/twkm/bubbadeem/master/index.html)
+    [Gameloop - The Correct Way](https://coderwall.com/p/iygcpa/gameloop-the-correct-way)
+    [Change SVG fill colour to Canvas](https://stackoverflow.com/questions/27596652/change-svg-fill-color-and-then-draw-to-canvas)
+    -->
+    <style type="text/css">
+
+    /* https://google-webfonts-helper.herokuapp.com/fonts */
+    /* modak-regular - latin */
+    @font-face {
+        font-family: 'Modak';
+        font-style: normal;
+        font-weight: 400;
+        src: local('Modak'),
+            url('resources/fonts/modak-v2-latin-regular.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+            url('resources/fonts/modak-v2-latin-regular.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+    }/* roboto-100 - latin */
+    @font-face {
+        font-family: 'Roboto';
+        font-style: normal;
+        font-weight: 100;
+        src: local('Roboto Thin'), local('Roboto-Thin'),
+            url('resources/fonts/roboto-v16-latin-100.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+            url('resources/fonts/roboto-v16-latin-100.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+    }
+    /* roboto-100italic - latin */
+    @font-face {
+        font-family: 'Roboto';
+        font-style: italic;
+        font-weight: 100;
+        src: local('Roboto Thin Italic'), local('Roboto-ThinItalic'),
+            url('resources/fonts/roboto-v16-latin-100italic.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+            url('resources/fonts/roboto-v16-latin-100italic.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+    }
+    /* roboto-300 - latin */
+    @font-face {
+        font-family: 'Roboto';
+        font-style: normal;
+        font-weight: 300;
+        src: local('Roboto Light'), local('Roboto-Light'),
+            url('resources/fonts/roboto-v16-latin-300.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+            url('resources/fonts/roboto-v16-latin-300.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+    }
+    /* roboto-300italic - latin */
+    @font-face {
+        font-family: 'Roboto';
+        font-style: italic;
+        font-weight: 300;
+        src: local('Roboto Light Italic'), local('Roboto-LightItalic'),
+            url('resources/fonts/roboto-v16-latin-300italic.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+            url('resources/fonts/roboto-v16-latin-300italic.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+    }
+    /* roboto-regular - latin */
+    @font-face {
+        font-family: 'Roboto';
+        font-style: normal;
+        font-weight: 400;
+        src: local('Roboto'), local('Roboto-Regular'),
+            url('resources/fonts/roboto-v16-latin-regular.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+            url('resources/fonts/roboto-v16-latin-regular.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+    }
+    /* roboto-italic - latin */
+    @font-face {
+        font-family: 'Roboto';
+        font-style: italic;
+        font-weight: 400;
+        src: local('Roboto Italic'), local('Roboto-Italic'),
+            url('resources/fonts/roboto-v16-latin-italic.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+            url('resources/fonts/roboto-v16-latin-italic.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+    }
+    /* roboto-500 - latin */
+    @font-face {
+        font-family: 'Roboto';
+        font-style: normal;
+        font-weight: 500;
+        src: local('Roboto Medium'), local('Roboto-Medium'),
+            url('resources/fonts/roboto-v16-latin-500.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+            url('resources/fonts/roboto-v16-latin-500.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+    }
+    /* roboto-500italic - latin */
+    @font-face {
+        font-family: 'Roboto';
+        font-style: italic;
+        font-weight: 500;
+        src: local('Roboto Medium Italic'), local('Roboto-MediumItalic'),
+            url('resources/fonts/roboto-v16-latin-500italic.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+            url('resources/fonts/roboto-v16-latin-500italic.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+    }
+    /* roboto-700 - latin */
+    @font-face {
+        font-family: 'Roboto';
+        font-style: normal;
+        font-weight: 700;
+        src: local('Roboto Bold'), local('Roboto-Bold'),
+            url('resources/fonts/roboto-v16-latin-700.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+            url('resources/fonts/roboto-v16-latin-700.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+    }
+    /* roboto-700italic - latin */
+    @font-face {
+        font-family: 'Roboto';
+        font-style: italic;
+        font-weight: 700;
+        src: local('Roboto Bold Italic'), local('Roboto-BoldItalic'),
+            url('resources/fonts/roboto-v16-latin-700italic.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+            url('resources/fonts/roboto-v16-latin-700italic.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+    }
+    /* roboto-900 - latin */
+    @font-face {
+        font-family: 'Roboto';
+        font-style: normal;
+        font-weight: 900;
+        src: local('Roboto Black'), local('Roboto-Black'),
+            url('resources/fonts/roboto-v16-latin-900.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+            url('resources/fonts/roboto-v16-latin-900.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+    }
+    /* roboto-900italic - latin */
+    @font-face {
+        font-family: 'Roboto';
+        font-style: italic;
+        font-weight: 900;
+        src: local('Roboto Black Italic'), local('Roboto-BlackItalic'),
+            url('resources/fonts/roboto-v16-latin-900italic.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+            url('resources/fonts/roboto-v16-latin-900italic.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+    }
+
+    html {
+        min-height: 100vh;
+    }
+
+    body {
+        margin: 0;
+        padding: 0;
+        height: 100vh;
+        background-color: #000;
+    }
+
+    div {
+        margin: 0;
+        padding: 0;
+    }
+
+    canvas {
+        display: block;
+        cursor: pointer;
+        position: relative;
+    }
+
+    #game_wrapper {
+        border: 1px solid #000;
+    }
+
+    #game_canvas {
+        display: block;
+        position: relative;
+        left: 50%;
+        top: 50%;
+        background-image: url('resources/backgrounds/Badlands.png');
+        background-size: cover;
+        background-color: #FFF;
+    }
+
+    </style>
+    <script type="text/javascript">
+
+        function Bubbadeem(canvas, settings = null) {
+            this.canvas = canvas;
+            this.canvas_base_width = 1000;
+            this.size_multiplier = this.canvas.width / this.canvas_base_width;
+            this.sizeUtil = (size) => {
+                return size * this.size_multiplier;
+            }
+            this.gamearea = {
+                'width' : this.sizeUtil(1000),
+                'height' : this.sizeUtil(477)
+            };
+            this.draw_cx = null;
+            this.fps = 30;
+            this.interval = 1000/this.fps;
+            this.game_time = 0;
+            this.last_time = (new Date()).getTime();
+            this.current_time = 0;
+            this.delta = 0;
+            this.max_bubbles = 30;
+            this.max_bubble_speed = this.sizeUtil(3);
+            this.bubbles = new Array();
+            this.bubble_image_code='data:image/svg+xml;charset=utf-8,<?xml version="1.0" encoding="UTF-8" standalone="no"?>\n                <!-- Created with Inkscape (http://www.inkscape.org/) -->\n\n                <svg\n                   xmlns:dc="http://purl.org/dc/elements/1.1/"\n                   xmlns:cc="http://creativecommons.org/ns#"\n                   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"\n                   xmlns:svg="http://www.w3.org/2000/svg"\n                   xmlns="http://www.w3.org/2000/svg"\n                   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"\n                   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"\n                   width="63.855083"\n                   height="63.855083"\n                   viewBox="0 0 16.894991 16.894991"\n                   version="1.1"\n                   id="svg8"\n                   inkscape:version="0.92.2 5c3e80d, 2017-08-06"\n                   sodipodi:docname="bubble.svg">\n                  <defs\n                     id="defs2" />\n                  <sodipodi:namedview\n                     id="base"\n                     pagecolor="#ffffff"\n                     bordercolor="#666666"\n                     borderopacity="1.0"\n                     inkscape:pageopacity="0.0"\n                     inkscape:pageshadow="2"\n                     inkscape:zoom="7.9195959"\n                     inkscape:cx="70.356621"\n                     inkscape:cy="37.308622"\n                     inkscape:document-units="mm"\n                     inkscape:current-layer="layer1"\n                     showgrid="false"\n                     units="px"\n                     inkscape:window-width="1920"\n                     inkscape:window-height="810"\n                     inkscape:window-x="1763"\n                     inkscape:window-y="134"\n                     inkscape:window-maximized="0" />\n                  <metadata\n                     id="metadata5">\n                    <rdf:RDF>\n                      <cc:Work\n                         rdf:about="">\n                        <dc:format>image/svg+xml</dc:format>\n                        <dc:type\n                           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />\n                        <dc:title></dc:title>\n                      </cc:Work>\n                    </rdf:RDF>\n                  </metadata>\n                  <g\n                     inkscape:label="Layer 1"\n                     inkscape:groupmode="layer"\n                     id="layer1"\n                     transform="translate(-52.222686,-180.04106)">\n                    <path\n                       style="opacity:0.25;fill:#000000;fill-opacity:0.10499998;stroke:none;stroke-width:2.70583963;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"\n                       d="m 256.39648,137.52734 a 17.855302,42.143408 52.167749 0 0 -1.30468,0.35157 35.034683,35.034683 0 0 1 0.47851,5.69336 35.034683,35.034683 0 0 1 -35.03515,35.0332 35.034683,35.034683 0 0 1 -9.63086,-1.41406 30.927541,30.927541 0 0 0 18.40039,6.11328 30.927541,30.927541 0 0 0 30.92773,-30.92578 30.927541,30.927541 0 0 0 -3.83594,-14.85157 z"\n                       transform="matrix(0.26458333,0,0,0.26458333,0,148.17186)"\n                       id="path867"\n                       inkscape:connector-curvature="0" />\n                    <circle\n                       style="opacity:0.25;fill:#e82444;fill-opacity:1;stroke:none;stroke-width:0.52916676;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"\n                       id="path815-7"\n                       cx="60.670181"\n                       cy="188.48856"\n                       r="8.1829119" />\n                    <ellipse\n                       style="opacity:0.25;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.80988121;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"\n                       id="path832-3"\n                       cx="-12.371008"\n                       cy="193.25958"\n                       rx="4.4046226"\n                       ry="3.3429554"\n                       transform="rotate(-21.18424)" />\n                    <ellipse\n                       style="opacity:0.25;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.52916664;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"\n                       id="path832"\n                       cx="13.078985"\n                       cy="192.42632"\n                       rx="2.9399648"\n                       ry="2.1381562"\n                       transform="rotate(-13.61174)" />\n                    <ellipse\n                       style="opacity:0.25;fill:#000000;fill-opacity:0.10499998;stroke:none;stroke-width:0.80988121;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"\n                       id="path832-3-8"\n                       cx="27.201355"\n                       cy="-200.60611"\n                       rx="4.4046226"\n                       ry="3.3429551"\n                       transform="rotate(154.19452)" />\n                    <ellipse\n                       style="opacity:0.25;fill:#000000;fill-opacity:0.10499998;stroke:none;stroke-width:0.52916664;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"\n                       id="path832-2"\n                       cx="0.40236369"\n                       cy="-203.21933"\n                       rx="2.9399648"\n                       ry="2.1381562"\n                       transform="rotate(161.76702)" />\n                    <circle\n                       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.5291667;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"\n                       id="path815"\n                       cx="60.670181"\n                       cy="188.48856"\n                       r="8.1829119" />\n                  </g>\n                </svg>\n';
+            this.colour_options = [
+                '#e82444',
+                '#119e33',
+                '#1723df',
+                '#d017df',
+                '#f175d9',
+                '#f1e475',
+                '#d4c016',
+                '#16d4af',
+                '#d46b16'
+            ];
+            this.bubble_images = new Array();
+            this.sounds = {
+                'bubbadeem' : {
+                    'intro' : 'intro.mp3',
+                    'pause' : 'pause.mp3',
+                    'start' : 'start.mp3',
+                    'pop' : [
+                        'pop.mp3'
+                    ]
+                },
+                'norah' : {
+                    'intro' : 'intro-2.mp3',
+                    'start' : 'start.mp3',
+                    'pause' : 'pause.mp3',
+                    'pop' : [
+                        'pop.mp3',
+                        'pop2.mp3',
+                        'pop3.mp3',
+                        'pop4.mp3',
+                        'pop5.mp3',
+                        'pop6.mp3',
+                        'pop7.mp3',
+                        'pop8.mp3'
+                    ]
+                }
+            };
+            this.active_sounds = 'bubbadeem';
+            this.sounds_audio = new Array();
+            this.score = 0;
+            this.sps = 0;
+            this.highest_sps = 0;
+            this.bubbles_spawned = 0;
+            this.bubbles_popped = 0;
+            this.bubbles_missed = 0;
+            this.started = false;
+            this.paused = false;
+            this.ticks = 0;
+            this.lang = 'en';
+            this.pause_menu = {
+                'buttons' : {
+                    'dimensions' : [this.sizeUtil(475),this.sizeUtil(65)],
+                    'resume' : {
+                        'position' : [this.sizeUtil(262), this.sizeUtil(124)]
+                    },
+                    'restart' : {
+                        'position' : [this.sizeUtil(262), this.sizeUtil(202)]
+                    },
+                    'quit' : {
+                        'position' : [this.sizeUtil(262),this.sizeUtil(279)]
+                    }
+                },
+                'panel' : {
+                    'image': 'resources/svg/pause_background.svg',
+                    'position' : [this.sizeUtil(250), this.sizeUtil(34)],
+                    'dimensions' : [this.sizeUtil(500), this.sizeUtil(406)]
+                }
+            };
+            this.panel = {
+                'buttons' : {
+                    'pause' : {
+                        'position' : [this.sizeUtil(927), this.sizeUtil(487)],
+                        'dimensions': [this.sizeUtil(65), this.sizeUtil(65)]
+                    }
+                }
+            };
+            this.made_by = 'Dad';
+
+            if (settings !== null) {
+                if ('fps' in settings) {
+                    this.fps = settings['fps'];
+                }
+
+                if ('max_bubbles' in settings) {
+                    this.max_bubbles = settings['max_bubbles'];
+                }
+
+                if ('bubble_image_code' in settings) {
+                    this.bubble_image_code = settings['bubble_image_code'];
+                }
+
+                if ('colour_options' in settings && settings['colour_options'] instanceof Array) {
+                    this.colour_options = settings['colour_options'];
+                }
+
+                if ('sounds' in settings) {
+                    this.sounds = settings['sounds'];
+                }
+
+                if ('active_sounds' in settings) {
+                    this.active_sounds = settings['active_sounds'];
+                }
+
+                if ('max_bubble_speed' in settings) {
+                    this.max_bubble_speed = settings['max_bubble_speed'];
+                }
+
+                if ('lang' in settings) {
+                    this.lang = settings['lang'];
+                }
+
+                if ('made_by' in settings) {
+                    this.made_by = settings['made_by'];
+                }
+            }
+
+            var script = document.createElement('script');
+            script.src = 'resources/lang/'+ this.lang +'.js';
+            document.head.appendChild(script); //or something of the likes
+
+            this.fullscreenify = () => {
+                var style = this.canvas.getAttribute('style') || '';
+
+                window.addEventListener('resize', function () {resize(this.canvas);}, false);
+
+                resize(this.canvas);
+
+                function resize(canvas) {
+                    var scale = Math.min(window.innerWidth/canvas.width,window.innerHeight/canvas.height);
+                    canvas.setAttribute('style', style + ' ' + '-ms-transform-origin: left top; -webkit-transform-origin: left top; -moz-transform-origin: left top; -o-transform-origin: left top; transform-origin: left top; -ms-transform: scale(' + scale + ') translateX(-50%) translateY(-50%); -webkit-transform: scale3d(' + scale + ', 1) translateX(-50%) translateY(-50%); -moz-transform: scale(' + scale + ') translateX(-50%) translateY(-50%); -o-transform: scale(' + scale + ') translateX(-50%) translateY(-50%); transform: scale(' + scale + ') translateX(-50%) translateY(-50%);');
+                }
+            }
+
+            this.clickCheckUtil = (pos, dim, event_pos) => {
+                if (!pos instanceof Array && pos.length != 2)
+                    return false
+                if (!dim instanceof Array && dim.length != 2)
+                    return false
+                if (!event_pos instanceof Array && event_pos.length != 2)
+                    return false
+
+                var xmin = pos[0];
+                var xmax = pos[0] + dim[0];
+
+                var ymin = pos[1];
+                var ymax = pos[1] + dim[1];
+
+                if ( ( xmax > event_pos[0] && event_pos[0] > xmin ) && ( ymax > event_pos[1] && event_pos[1] > ymin ) )
+                    return true;
+                return false;
+            }
+
+            this.clickPopListener = (event) => {
+                // console.log(event.offsetX + " " + event.offsetY);
+                if (!this.paused && this.started) {
+                    if (event.offsetY < this.gamearea.height) {
+                        // Bubble area
+                        for (i = 0; i < this.bubbles.length; i++) {
+                            var bubble = this.bubbles[i];
+                            if (bubble.clickCheck(event.offsetX, event.offsetY)) {
+                                bubble.pop();
+                                break;
+                            }
+                        }
+                    } else {
+                        // Panel buttons
+
+                        // Pause button
+                        if (this.clickCheckUtil(this.panel.buttons.pause.position, this.panel.buttons.pause.dimensions, [event.offsetX, event.offsetY]))
+                            this.pause();
+                    }
+                }
+
+                if (!this.started) {
+                    // Detect click on start button
+                    if ( (this.sizeUtil(650) > event.offsetX && event.offsetX > this.sizeUtil(350)) && (this.sizeUtil(412) > event.offsetY && event.offsetY > this.sizeUtil(300)) ) {
+                        this.restart();
+                    }
+
+                    // Detect click on Github icon
+                    if ( (this.sizeUtil(1000) > event.offsetX && event.offsetX > this.sizeUtil(1000 - 50)) && (this.sizeUtil(562) > event.offsetY && event.offsetY > this.sizeUtil(562 - 50)) ) {
+                        window.open('https://github.com/twkm/bubbadeem');
+                    }
+                }
+
+                if (this.paused) {
+                    if (this.clickCheckUtil(this.pause_menu.buttons.resume.position, this.pause_menu.buttons.dimensions, [event.offsetX, event.offsetY]))
+                        this.resume();
+
+                    if (this.clickCheckUtil(this.pause_menu.buttons.restart.position, this.pause_menu.buttons.dimensions, [event.offsetX, event.offsetY]))
+                        this.restart();
+
+                    if (this.clickCheckUtil(this.pause_menu.buttons.quit.position, this.pause_menu.buttons.dimensions, [event.offsetX, event.offsetY]))
+                        this.stop();
+                }
+            }
+
+            this.init = (draw_cx) => {
+
+                this.fullscreenify();
+
+                this.draw_cx = draw_cx;
+
+                canvas.addEventListener('click', this.clickPopListener, false);
+
+                for (i=0; i < this.colour_options.length; i++) {
+                    var image = new Image();
+                    var image_data = this.bubble_image_code.replace(/#e82444/g, this.colour_options[i]).replace(/#/g, '%23');
+                    image.src = image_data;
+                    this.bubble_images.push(image);
+                }
+
+                this.sounds_audio['intro'] = new Audio('resources/sound/' + this.active_sounds + '/' + this.sounds[this.active_sounds]['intro']);
+                this.sounds_audio['pause'] = new Audio('resources/sound/' + this.active_sounds + '/' + this.sounds[this.active_sounds]['pause']);
+                this.sounds_audio['start'] = new Audio('resources/sound/' + this.active_sounds + '/' + this.sounds[this.active_sounds]['start']);
+            }
+
+            this.createBubbleCheck = (max_bubbles_override = null, fullscreen = false) => {
+
+                var max_bubbles = (max_bubbles_override !== null) ? max_bubbles_override : this.max_bubbles;
+
+                if (this.bubbles.length < max_bubbles) {
+                    if ((this.bubbles.length == 0) || ((Math.random() * this.fps) >= (this.fps - 1))) {
+                        var bubble = new Bubble(this, fullscreen);
+                        this.bubbles.push(bubble);
+                    }
+                }
+            }
+
+            this.drawBubbles = () => {
+                for (i = 0; i < this.bubbles.length; i++) {
+                    this.bubbles[i].draw();
+                }
+            }
+
+            this.redraw  = () => {
+
+                this.current_time = new Date();
+                this.delta = Math.abs(this.current_time-this.last_time);
+
+                if(this.delta > this.interval) {
+
+                    this.draw_cx.clearRect(0,0,this.canvas.width,this.canvas.height);
+
+                    if (this.started) {
+                        if (!this.paused) {
+                            this.createBubbleCheck();
+                            this.game_time += (this.delta % this.interval);
+                        }
+
+                        this.drawBubbles();
+                        this.drawPanel();
+
+                        if (this.paused) {
+                            this.drawPauseMenu();
+                        }
+
+                    } else {
+                        this.drawStartScreen();
+                    }
+
+                    this.sps = Math.round(this.score / (this.game_time / 1000));
+                    if (this.sps > this.highest_sps)
+                        this.highest_sps = this.sps;
+
+                    this.lastTime = this.currentTime - (this.delta % this.interval);
+                    this.ticks++;
+                }
+
+            }
+
+            this.drawPauseMenu = () => {
+                // Draw pause menu
+                this.draw_cx.textAlign="center";
+                this.draw_cx.fillStyle = "rgba(0, 0, 0, 0.75)";
+                this.draw_cx.fillRect(0, 0, this.gamearea.width, this.gamearea.height);
+
+                var panel_bg_img = new Image();
+                panel_bg_img.src = 'resources/svg/pause_background.svg';
+                this.draw_cx.drawImage(panel_bg_img, this.sizeUtil(250), this.sizeUtil(34), this.sizeUtil(500), this.sizeUtil(406));
+
+                var button_img = new Image();
+                button_img.src = 'resources/svg/pause_button.svg';
+
+                this.draw_cx.fillStyle = "#FFF";
+                this.draw_cx.font = "700 "+ this.sizeUtil(48) +"px Roboto";
+                this.draw_cx.fillText(language['paused'], this.canvas.width / 2, this.pause_menu.panel.position[1] + this.sizeUtil(64));
+
+                this.draw_cx.fillStyle = "#000";
+                this.draw_cx.font = "700 "+ this.sizeUtil(48) +"px Roboto";
+                // Resume
+                this.draw_cx.drawImage(button_img, this.pause_menu.buttons.resume.position[0], this.pause_menu.buttons.resume.position[1], this.pause_menu.buttons.dimensions[0], this.pause_menu.buttons.dimensions[1]);
+                this.draw_cx.fillText(language['resume'], this.canvas.width / 2, this.pause_menu.buttons.resume.position[1] + this.sizeUtil(49));
+                // Restart
+                this.draw_cx.drawImage(button_img, this.pause_menu.buttons.restart.position[0], this.pause_menu.buttons.restart.position[1], this.pause_menu.buttons.dimensions[0], this.pause_menu.buttons.dimensions[1]);
+                this.draw_cx.fillText(language['restart'], this.canvas.width / 2, this.pause_menu.buttons.restart.position[1] + this.sizeUtil(49));
+                // Quit
+                this.draw_cx.drawImage(button_img, this.pause_menu.buttons.quit.position[0], this.pause_menu.buttons.quit.position[1], this.pause_menu.buttons.dimensions[0], this.pause_menu.buttons.dimensions[1]);
+                this.draw_cx.font = "700 " +this.sizeUtil(48) +"px Roboto";
+                this.draw_cx.fillText(language['quit'], this.canvas.width / 2, this.pause_menu.buttons.quit.position[1] + this.sizeUtil(49));
+            }
+
+            this.drawPanel = () => {
+                this.draw_cx.fillStyle = "#000000";
+                this.draw_cx.fillRect(0,this.gamearea.height,this.gamearea.width,this.sizeUtil(85));
+
+                if (!this.paused) {
+                    // Draw pause button
+                    var pause_button = new Image();
+                    pause_button.src = 'resources/svg/panel_pause_button.svg';
+                    this.draw_cx.drawImage(pause_button, this.panel.buttons.pause.position[0], this.panel.buttons.pause.position[1], this.panel.buttons.pause.dimensions[0], this.panel.buttons.pause.dimensions[1]);
+                }
+
+                this.draw_cx.lineWidth = 0;
+                this.draw_cx.strokeStyle = null;
+
+                // Score per second
+                this.draw_cx.fillStyle = "#FFF";
+                this.draw_cx.font= this.sizeUtil(18) +"px Roboto";
+                this.draw_cx.textAlign="left";
+                this.draw_cx.fillText(language['score_per_second']+':', this.sizeUtil(10), this.canvas.height - this.sizeUtil(60));
+
+                this.draw_cx.font="900 "+ this.sizeUtil(40) +"px Roboto";
+                this.draw_cx.fillText(this.sps, this.sizeUtil(10), this.canvas.height - this.sizeUtil(16));
+
+                // Highest Score per second
+                this.draw_cx.fillStyle = "#FFF";
+                this.draw_cx.font= this.sizeUtil(18) +"px Roboto";
+                this.draw_cx.textAlign="left";
+                this.draw_cx.fillText(language['highest_score_per_second']+':', this.sizeUtil(150), this.canvas.height - this.sizeUtil(60));
+
+                this.draw_cx.font="900 "+ this.sizeUtil(40) +"px Roboto";
+                this.draw_cx.fillText(this.highest_sps, this.sizeUtil(150), this.canvas.height - this.sizeUtil(16));
+
+                // Score
+                this.draw_cx.fillStyle = "#FFF";
+                this.draw_cx.font= this.sizeUtil(18) +"px Roboto";
+                this.draw_cx.textAlign="left";
+                this.draw_cx.fillText(language['score']+':', this.sizeUtil(290), this.canvas.height - this.sizeUtil(60));
+
+                this.draw_cx.font="900 "+ this.sizeUtil(40) +"px Roboto";
+                this.draw_cx.fillText(this.score, this.sizeUtil(290), this.canvas.height - this.sizeUtil(16));
+
+            }
+
+            this.drawStartScreen = () => {
+
+                this.createBubbleCheck(63, true);
+                this.drawBubbles();
+
+                // if (this.ticks == 0){
+                //     this.animationQueue.push(new animatedText(this, "BUBBADEEM!", callback = addStartButton));
+                // }
+
+                this.draw_cx.fillStyle = "#000";
+                this.draw_cx.font= this.sizeUtil(135) +"px Modak";
+                this.draw_cx.textAlign="center";
+                this.draw_cx.fillText(language['game'], this.canvas.width / 2, this.sizeUtil(250));
+                this.draw_cx.lineWidth = this.sizeUtil(4);
+                this.draw_cx.strokeStyle = "#FFF";
+                this.draw_cx.strokeText(language['game'], this.canvas.width / 2, this.sizeUtil(250));
+
+                // Can use the below button code to change background colour, like we do with the bubbles, rather than
+                // using the button.svg file.
+                var button_code = 'data:image/svg+xml;charset=utf-8,<?xml version="1.0" encoding="UTF-8" standalone="no"?>                <svg                   xmlns:dc="http://purl.org/dc/elements/1.1/"                   xmlns:cc="http://creativecommons.org/ns#"                   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"                   xmlns:svg="http://www.w3.org/2000/svg"                   xmlns="http://www.w3.org/2000/svg"                   xmlns:xlink="http://www.w3.org/1999/xlink"                   id="svg1520"                   version="1.1"                   viewBox="0 0 79.374016 29.66188"                   height="29.66188mm"                   width="79.374016mm">                  <defs                     id="defs1514">                    <linearGradient                       id="linearGradient2137">                      <stop                         style="stop-color:#ffffff;stop-opacity:0.5"                         offset="0"                         id="stop2133" />                      <stop                         style="stop-color:#4a4a4a;stop-opacity:0"                         offset="1"                         id="stop2135" />                    </linearGradient>                    <linearGradient                       gradientUnits="userSpaceOnUse"                       y2="44.97963"                       x2="87.169624"                       y1="57.274029"                       x1="87.169624"                       id="linearGradient2107"                       xlink:href="#linearGradient2137" />                  </defs>                  <metadata                     id="metadata1517">                    <rdf:RDF>                      <cc:Work                         rdf:about="">                        <dc:format>image/svg+xml</dc:format>                        <dc:type                           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />                        <dc:title></dc:title>                      </cc:Work>                    </rdf:RDF>                  </metadata>                  <g                     style="display:inline"                     id="layer3">                    <rect                       ry="2.5480402"                       rx="2.610929"                       y="0.94686645"                       x="0.93209398"                       height="27.76815"                       width="77.509819"                       id="rect837-6-0"                       style="opacity:1;fill:#7442fb;fill-opacity:0.5;stroke:none;stroke-width:0.80684924;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />                  </g>                  <g                     transform="translate(-51.02728,-29.680965)"                     id="layer1">                    <rect                       ry="2.645833"                       rx="2.6458333"                       y="30.094965"                       x="51.44128"                       height="28.833881"                       width="78.546013"                       id="rect837"                       style="opacity:1;fill:none;fill-opacity:1;stroke:#ffffff;stroke-width:0.82800001;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.98009949" />                    <rect                       ry="2.5480402"                       rx="2.610929"                       y="30.627832"                       x="51.959377"                       height="27.76815"                       width="77.509819"                       id="rect837-6"                       style="opacity:1;fill:url(#linearGradient2107);fill-opacity:1;stroke:#000000;stroke-width:0.80684924;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;" />                  </g>                </svg>';
+
+                var button_img = new Image();
+                // var button_img_data = button_code.replace(/#e82444/g, this.colour_options[i]).replace(/#/g, '%23');
+                button_img.src = 'resources/svg/button.svg';
+                this.draw_cx.drawImage(button_img, this.sizeUtil(350), this.sizeUtil(300), this.sizeUtil(300), this.sizeUtil(112));
+
+                this.draw_cx.font = "700 "+ this.sizeUtil(48) +"px Roboto";
+                this.draw_cx.fillText(language['start'], this.canvas.width / 2, this.sizeUtil(373));
+
+                // Draw the "Made with love by..." text
+                this.draw_cx.textAlign="left";
+                this.draw_cx.font = "500 "+ this.sizeUtil(24) +"px Roboto";
+
+                var made_by_w = this.draw_cx.measureText(language['by'] + ' ' + this.made_by).width;
+                var made_with_w = this.draw_cx.measureText(language['made_with']).width;
+
+                var github_img = new Image();
+                github_img.src = 'resources/svg/github.svg';
+                var heart_img = new Image();
+                heart_img.src = 'resources/svg/heart.svg';
+
+                var current_x = this.sizeUtil(1000 - 10 - 30);
+                var image_y = this.sizeUtil(562 - 10 - 30);
+                var text_y = this.sizeUtil(562 - 16);
+
+                this.draw_cx.drawImage(github_img, current_x, image_y, this.sizeUtil(30), this.sizeUtil(30));
+                this.draw_cx.fillText(language['by'] + ' ' + this.made_by, current_x -= made_by_w + this.sizeUtil(10), text_y, made_by_w);
+                this.draw_cx.drawImage(heart_img, current_x -= this.sizeUtil(30 + 10), image_y, this.sizeUtil(30), this.sizeUtil(30));
+                this.draw_cx.fillText(language['made_with'], current_x -= made_with_w, text_y, made_with_w);
+
+            }
+
+            this.pause = () => {
+                if (this.started) {
+                    this.paused = true;
+                    this.sounds_audio['pause'].play();
+                } else {
+                    return false;
+                }
+            }
+
+            this.resume = () => {
+                this.paused = false;
+            }
+
+            this.restart = () => {
+                this.bubbles.length = 0;
+                this.bubbles_spawned = 0;
+                this.bubbles_missed = 0;
+                this.bubbles_popped = 0;
+                this.score = 0;
+                this.sps = 0;
+                this.highest_sps = 0;
+                this.started = true;
+                this.paused = false;
+                this.sounds_audio['intro'].play();
+                this.game_time = 0;
+            }
+
+            this.stop = () => {
+                this.bubbles.length = 0;
+                this.started = false;
+                this.paused = false;
+            }
+        }
+
+        function Bubble (game, fullscreen) {
+            this.game = game;
+            this.base_size = this.game.sizeUtil(65);
+            this.base_speed = this.game.sizeUtil(30) / this.game.fps;
+            this.posX = false;
+            this.posY = false;
+            this.popped = false;
+            this.image = null;
+            this.path_angle = 90;
+            this.last_path_update = null;
+            this.current_time = this.game.current_time;
+            this.score = 0;
+            this.fullscreen = fullscreen;
+
+            this.setup = (canvas) => {
+                this.size = this.base_size + (Math.random() * this.game.sizeUtil(65)) + 1;
+                // random between 0 and 4
+                this.speed = this.base_speed + (Math.random() * (this.base_speed * this.game.max_bubble_speed));
+                this.posX = (Math.random() * canvas.width) + this.game.sizeUtil(1);
+                if (this.fullscreen) {
+                    this.posY = this.game.canvas.height + (this.size / 2);
+                } else {
+                    this.posY = this.game.gamearea.height + (this.size / 2);
+                }
+                this.image = this.game.bubble_images[Math.floor(Math.random() * this.game.bubble_images.length)];
+                // Random between 65 and 125 degrees
+                this.path_angle = 65 + (Math.random() * 50);
+                this.last_path_update = (new Date()).getTime();
+
+                // Score is 65% based on speed, 35% based on size
+                // Max score for a bubble is 100
+                var speed_score = (this.speed / (this.base_speed + this.game.max_bubble_speed)) * 0.65;
+                var size_score = (this.size / (this.base_size + 65 + 1)) * 0.35;
+                this.score = Math.floor((speed_score + size_score) * 100);
+
+                this.game.bubbles_spawned++;
+            }
+
+            this.draw = () => {
+
+                if (!this.game.paused) {
+                    if (this.posX === false) {
+                        this.setup(this.game.canvas);
+                    } else {
+                        this.path_update_check();
+                        // The math: http://www.helixsoft.nl/articles/circle/sincos.htm
+                        this.posX -= this.speed * Math.cos(this.path_angle * Math.PI / 180);
+                        this.posY -= this.speed * Math.sin(this.path_angle * Math.PI / 180);
+                    }
+                }
+
+                if (this.posY < (0 - (this.size / 2)) || this.posX < (0 - (this.size / 2))) {
+                    this.remove();
+                } else {
+                    this.game.draw_cx.drawImage(this.image, this.posX - (this.size / 2), this.posY - (this.size / 2), this.size, this.size);
+                }
+            }
+
+            this.path_update_check = () => {
+                var low = 1000;
+                var high = 4000;
+
+                var path_delta = this.game.current_time - this.last_path_update;
+
+                if (path_delta > high) {
+                    // force update
+                    this.path_update();
+                } else if (path_delta > low) {
+                    // 1 chance per second
+                    if ((Math.random() * this.game.fps) >= (this.game.fps - 1)) {
+                        this.path_update();
+                    }
+                }
+            }
+
+            this.path_update = () => {
+                // Sway back and forth
+                if (this.path_angle > 90) {
+                    this.path_angle = 65 + (Math.random() * 25);
+                } else if (this.path_angle < 90) {
+                    this.path_angle = 90 + (Math.random() * 25);
+                } else {
+                    this.path_angle = 65 + (Math.random() * 50);
+                }
+                this.last_path_update = (new Date()).getTime();
+            }
+
+            this.pop = () => {
+                this.pop_audio();
+                this.popped = true;
+                this.game.score += this.score;
+                this.remove();
+                this.game.bubbles_popped++;
+            }
+
+            this.pop_audio = () => {
+                sound = new Audio('resources/sound/' + this.game.active_sounds + '/pop/' + this.game.sounds[this.game.active_sounds]['pop'][Math.floor(Math.random() * this.game.sounds[this.game.active_sounds]['pop'].length)] ).play();
+            }
+
+            this.remove = () => {
+                var this_bubble = this.game.bubbles.indexOf(this);
+                if (!this.popped)
+                    this.game.bubbles_missed++;
+                this.game.bubbles.splice(this_bubble,1);
+            }
+
+            this.clickCheck = (x, y) => {
+                if (Math.sqrt((x-this.posX)*(x-this.posX) + (y-this.posY)*(y-this.posY)) < (this.size / 2)) {
+                    return true;
+                }
+                return false;
+            }
+
+        }
+
+        function mainLoop() {
+            window.requestAnimationFrame(mainLoop);
+            game.redraw();
+        }
+
+        var canvas, game;
+
+        window.addEventListener(
+            'load',
+            function () {
+
+                canvas = document.getElementsByTagName('canvas')[0];
+                settings = {
+                    'active_sounds': 'norah', 
+                    'max_bubbles' : 5, 
+                    'max_bubble_speed' : 2,
+                    'sounds': {
+                        'norah' : {
+                            'intro' : 'intro-2.mp3',
+                            'start' : 'start.mp3',
+                            'pause' : 'pause.mp3',
+                            'pop' : [
+                                'pop.mp3',
+                                'pop2.mp3',
+                                'pop3.mp3',
+                                'pop4.mp3',
+                                'pop5.mp3',
+                                'pop6.mp3',
+                                'pop7.mp3',
+                                'pop8.mp3'
+                            ]
+                        }
+                    },
+                    'bubble_image_code': 'data:image/svg+xml;charset=utf-8,<?xml version="1.0" encoding="UTF-8" standalone="no"?>\n<!-- Created with Inkscape (http://www.inkscape.org/) -->\n\n<svg\n   width="48.822254mm"\n   height="50.966869mm"\n   viewBox="0 0 48.822254 50.966869"\n   version="1.1"\n   id="svg1"\n   inkscape:version="1.4 (e7c3feb1, 2024-10-09)"\n   sodipodi:docname="hmonster.svg"\n   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"\n   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"\n   xmlns="http://www.w3.org/2000/svg"\n   xmlns:svg="http://www.w3.org/2000/svg">\n  <sodipodi:namedview\n     id="namedview1"\n     pagecolor="#ffffff"\n     bordercolor="#000000"\n     borderopacity="0.25"\n     inkscape:showpageshadow="2"\n     inkscape:pageopacity="0.0"\n     inkscape:pagecheckerboard="0"\n     inkscape:deskcolor="#d1d1d1"\n     inkscape:document-units="mm"\n     inkscape:zoom="1.0482005"\n     inkscape:cx="59.625998"\n     inkscape:cy="171.24587"\n     inkscape:window-width="1424"\n     inkscape:window-height="850"\n     inkscape:window-x="2488"\n     inkscape:window-y="383"\n     inkscape:window-maximized="0"\n     inkscape:current-layer="layer1" />\n  <defs\n     id="defs1" />\n  <g\n     inkscape:label="Layer 1"\n     inkscape:groupmode="layer"\n     id="layer1"\n     transform="translate(-11.858404,-9.6818415)">\n    <path\n       id="rect2-5"\n       style="fill:#e82444;fill-opacity:0.796078;stroke:#000000;stroke-width:0.936881;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"\n       d="m 16.517491,19.302903 c 0.829869,-0.240519 0.568843,2.401799 0.568843,2.401799 0,0 1.84982,-5.579597 3.196431,-7.024737 1.018234,1.346611 -0.482181,7.262861 -0.482181,7.262861 0,0 0.995853,-2.130832 2.046877,-2.295047 0.591225,3.711456 -1.66463,5.587769 -1.500363,8.445258 -1.215292,1.77362 -2.584284,2.927337 -2.584284,2.927337 0,0 1.981192,-0.451368 2.83516,-0.221468 1.182396,0.689753 3.097902,1.609146 3.097902,1.609146 l -0.164214,2.956537 c 0,0 -9.632703,-0.4598 -9.993975,-1.149553 -0.427009,-0.722596 0.286478,-2.693326 0.286478,-2.693326 0,0 -1.560116,-1.445399 -1.49443,-2.167995 0.525538,-3.84288 0.968943,-4.434312 4.187756,-10.050812 z"\n       sodipodi:nodetypes="cccccccccccccc" />\n    <path\n       id="rect2-2-2"\n       style="fill:#e82444;fill-opacity:0.796078;stroke:#000000;stroke-width:0.936881;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"\n       d="m 58.434556,18.472618 c -0.829869,-0.240519 -0.847565,0.915385 -0.847565,0.915385 0,0 -0.131164,-7.112388 -1.477776,-8.557579 -1.018233,1.346663 -1.70096,8.93509 -1.70096,8.93509 0,0 0.156876,-1.516239 -1.814635,-1.969897 -0.591224,3.711455 0.735608,8.74636 0.571394,11.603849 1.215239,1.773672 1.283683,3.48473 1.283683,3.48473 0,0 -2.259914,-0.404941 -3.113881,-0.174989 -1.182397,0.689701 -3.330145,1.376904 -3.330145,1.376904 l -0.06803,3.494203 c 0,0 10.654581,-0.718796 11.015905,-1.408549 0.426957,-0.722596 0.177955,-2.507511 0.177955,-2.507511 0,0 0.445331,-2.002845 0.379645,-2.725388 1.100263,-3.331967 1.028436,-5.084612 -1.075592,-12.466248 z"\n       sodipodi:nodetypes="cccccccccccccc"\n       inkscape:transform-center-x="-30.710143"\n       inkscape:transform-center-y="-0.13138007" />\n    <path\n       id="rect3-2"\n       style="fill:#e82444;fill-opacity:0.796078;stroke:#000000;stroke-width:0.936881;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"\n       d="m 18.41249,56.962984 c -5.2e-5,0 2.891736,-2.131666 4.059923,-2.545507 0.784743,-0.278046 2.746104,-0.322288 2.746104,-0.322288 0,0 0.561869,-1.829104 0.873902,-2.173929 0.634165,-0.216261 1.584058,-0.516167 3.007129,-0.435231 l 0.830181,-4.873397 4.32402,0.75955 C 33.824762,50.345324 33.266641,59.019856 32.960593,59.237785 32.6661,59.447438 19.693467,59.303475 19.2993,59.122808 18.790209,58.810775 18.41249,56.962984 18.41249,56.962984 Z"\n       sodipodi:nodetypes="cscccccscc" />\n    <path\n       id="rect3-8-6"\n       style="fill:#e82444;fill-opacity:0.796078;stroke:#000000;stroke-width:0.936881;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"\n       d="m 49.775012,58.781159 c 0,0 -1.183802,-1.326936 -2.351989,-1.740778 -0.784742,-0.278046 -4.618253,-1.964537 -4.618253,-1.964537 0,0 0.242809,-2.321748 -0.06922,-2.666625 -0.634164,-0.216263 -1.551215,-0.56546 -2.842862,-0.960718 l 0.565668,-5.398935 -3.227921,1.071584 c 0,0 -0.741542,1.725944 -1.553662,4.889114 -0.812172,3.163172 -1.69487,7.763625 -1.451646,7.99467 0.328429,0.312034 14.778004,0.147819 15.172171,-0.03279 0.509091,-0.312034 0.377719,-1.190933 0.377719,-1.190933 z"\n       sodipodi:nodetypes="cscccccsscc" />\n    <path\n       id="rect4-6"\n       style="baseline-shift:baseline;display:inline;overflow:visible;fill:#e82444;fill-opacity:0.797814;stroke:#000000;stroke-width:0.936881;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;enable-background:accumulate;stop-color:#000000"\n       d="m 25.694192,16.733818 c 1.066119,-0.915958 3.954785,1.463148 3.954785,1.463148 0,0 -0.165047,-5.783005 1.074863,-7.826811 1.706478,1.300599 2.51485,5.457906 2.51485,5.457906 0,0 1.826243,-0.992625 2.51485,-0.48775 2.502879,1.835142 1.058312,9.250298 1.058312,9.250298 -5.674795,0.126636 -7.23007,1.203945 -9.041739,2.222127 -0.882542,-2.322529 -3.84163,-7.471994 -2.075921,-10.078918 z"\n       sodipodi:nodetypes="ccccsccc" />\n    <path\n       id="rect5-7"\n       style="fill:#e82444;fill-opacity:0.796078;stroke:#000000;stroke-width:0.936881;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"\n       d="m 44.533785,15.028329 c 0.743207,-0.185815 1.412817,0.265398 1.412817,0.265398 0,0 4.243397,-3.992312 5.056297,-3.899457 0.394792,1.138051 -2.32357,6.311562 -2.32357,6.311562 0,0 1.017974,0.242184 0.948333,3.58659 -0.394844,1.741871 -4.669366,6.523662 -4.669366,6.523662 -2.254188,-1.478659 -4.836858,-2.409971 -7.748009,-2.793832 0,0 3.86297,-7.648232 7.323498,-9.993923 z"\n       sodipodi:nodetypes="cccccccc" />\n    <path\n       id="path1-3"\n       style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.936881;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"\n       d="m 48.281727,35.022992 c 0,3.258005 -0.139335,4.445502 -3.14839,7.814476 -2.217702,2.482996 -6.565144,4.622885 -10.518784,4.622885 -3.953692,0 -8.193445,-1.450448 -9.518611,-3.211785 -0.973108,-1.293365 -2.300565,-3.049341 -2.618324,-4.912434 -0.317759,-1.863145 0.141886,-4.065649 0.258007,-5.694626 0.23167,-3.249781 1.991081,-4.864132 4.107705,-6.884308 2.13,-2.032929 5.829016,-2.508188 9.782707,-2.508188 3.95364,0 7.796571,2.109597 9.722123,3.988617 1.9255,1.878967 1.933567,3.527358 1.933567,6.785363 z"\n       sodipodi:nodetypes="ssssssssss" />\n    <path\n       id="rect3-8-1-9"\n       style="fill:#000000;fill-opacity:1;stroke-width:19.2892;stroke-linecap:square"\n       d="m 49.775012,58.781159 c 0,0 -1.183802,-1.326936 -2.351989,-1.740778 -0.784742,-0.278046 -4.618253,-1.964537 -4.618253,-1.964537 0,0 0.242809,-2.321748 -0.06922,-2.666625 -0.634164,-0.216263 -1.499895,-1.055082 -2.791594,-1.450342 0,0 -1.75962,0.51263 -4.267183,1.051387 -0.812172,3.163172 -1.69487,7.763625 -1.451646,7.99467 0.328429,0.312034 14.778004,0.147819 15.172171,-0.03279 0.509091,-0.312034 0.377719,-1.190933 0.377719,-1.190933 z"\n       sodipodi:nodetypes="csccccscc" />\n    <path\n       id="rect3-0-3"\n       style="fill:#000000;fill-opacity:1;stroke-width:19.2892;stroke-linecap:square"\n       d="m 18.41249,56.962984 c -5.2e-5,0 2.891736,-2.131666 4.059923,-2.545507 0.784743,-0.278046 2.746104,-0.322288 2.746104,-0.322288 0,0 0.561869,-1.829104 0.873902,-2.173929 0.634165,-0.216261 1.640115,-0.845221 3.063134,-0.764233 2.348501,0.516482 2.356465,0.447986 4.619866,0.789581 -0.231409,2.567524 -0.661802,7.182238 -0.814826,7.291177 C 32.6661,59.44749 19.693467,59.303475 19.2993,59.122808 18.790209,58.810775 18.41249,56.962984 18.41249,56.962984 Z"\n       sodipodi:nodetypes="csccccscc" />\n    <path\n       id="path8"\n       style="fill:#000000;fill-opacity:1;stroke-width:0.936881;stroke-linecap:square"\n       d="m 30.779116,27.626314 c -0.154221,0 -0.312189,0.01249 -0.471771,0.04736 -0.974669,0.213089 -1.57672,1.013133 -1.57672,2.627536 0,0.807227 0.526528,2.227019 2.617595,2.67844 -0.01301,0.200232 -0.07162,0.384693 -0.320049,0.590911 0.0432,0.115914 0.13845,0.179674 0.387869,0.179674 0.997674,0 1.338127,-2.162947 1.338127,-3.777402 0,-1.412661 -0.895711,-2.327265 -1.975051,-2.346784 z m -0.0203,0.721086 c 0.503418,0.01145 0.87739,0.702349 1.005222,1.504579 0.03852,0.241924 5.2e-5,2.428188 -0.21314,2.428136 -0.106597,5.2e-5 -0.377147,-0.118932 -0.632656,-0.256861 0.496391,-0.672837 0.813682,-1.646569 0.574309,-2.226394 -0.239374,-0.579878 -1.00059,-0.56265 -1.743797,-0.513568 5.2e-5,-0.244838 0.465994,-0.941774 1.010062,-0.935892 z"\n       sodipodi:nodetypes="sssccssscsccscc" />\n    <path\n       id="path9"\n       style="fill:#000000;fill-opacity:1;stroke-width:1.12833;stroke-linecap:square"\n       d="m 36.957849,28.030734 c -1.744889,0.01666 -2.200734,0.987213 -2.186212,2.33601 0.01666,1.562301 1.221641,2.419808 2.424493,2.409971 0.500867,-0.0052 1.410319,-0.966758 1.870171,-2.405911 -0.262743,-0.140689 -0.387608,0.01978 -0.510756,0.0088 0.0903,-1.521912 -0.99627,-2.354331 -1.597696,-2.348658 z m -0.647072,0.780943 c -0.346646,0.743155 -0.306204,1.350723 -0.150942,1.736041 0.211266,0.437055 0.92491,0.760591 1.236683,0.92314 -0.07344,0.333894 -0.142354,0.735036 -0.771678,0.550418 -0.643221,-0.188678 -0.821801,-0.618914 -0.999288,-1.218102 -0.318852,-1.076633 0.311825,-1.997379 0.685225,-1.991497 z"\n       sodipodi:nodetypes="cssccccscssss" />\n    <path\n       id="path10-7"\n       style="stroke-width:0.52049;stroke-linecap:square"\n       d="m 28.807501,34.235023 -0.195287,0.551094 c -0.459436,1.301328 -0.85657,2.321696 -1.102762,3.174675 -0.246191,0.852978 -0.358617,1.567767 -0.119973,2.22145 0.238645,0.653631 0.81566,1.120926 1.66411,1.492244 0.230993,0.101079 0.487491,0.197838 0.767358,0.292619 h 0.0062 c 0.04164,0.01457 0.09056,0.03019 0.142822,0.04632 0.722388,0.235521 1.604358,0.461102 2.695356,0.710885 2.13609,0.489052 4.028122,0.03071 5.292287,-0.922048 1.264165,-0.952912 1.911186,-2.454161 1.435511,-3.88634 -0.561921,-1.691748 -1.041136,-2.626183 -1.665203,-3.118983 -0.120337,-0.09504 -0.25098,-0.169471 -0.385995,-0.223238 l -0.01613,-0.01249 h -0.01457 c -0.205698,-0.07672 -0.420035,-0.106179 -0.622922,-0.08125 -0.34675,0.04268 -0.639109,0.205593 -0.905912,0.399684 -0.403432,0.293556 -0.773344,0.67799 -1.146847,1.036347 -0.110813,0.07896 -0.206427,0.158125 -0.298866,0.275183 -0.02186,0.01926 -0.0432,0.0406 -0.0648,0.0597 -0.502377,0.43513 -0.994032,0.732902 -1.506506,0.739148 -1.220496,0.01457 -1.69206,-0.352372 -2.09825,-0.834606 -0.40619,-0.482285 -0.667216,-1.178024 -1.364203,-1.614403 z m 8.03709,1.451906 c 0,0.03695 0.0057,0.05304 0.0062,0.09332 0,0.352008 -0.03123,0.824768 -0.08958,1.289149 -0.0583,0.464433 -0.142979,0.925275 -0.2337,1.251257 -0.02498,0.08994 -0.04632,0.132205 -0.07021,0.196381 -0.04841,-0.02602 -0.02707,-0.01041 -0.118099,-0.09655 -0.185503,-0.175821 -0.405202,-0.452253 -0.599501,-0.742114 -0.19435,-0.289861 -0.367673,-0.595648 -0.479058,-0.829504 -0.03227,-0.06813 -0.04528,-0.109043 -0.06589,-0.160832 0.05798,-0.05049 0.06631,-0.06095 0.179933,-0.140167 0.200232,-0.139544 0.460738,-0.30381 0.72676,-0.459385 0.260036,-0.152035 0.524133,-0.294909 0.743155,-0.401557 z m -7.61617,0.17884 c 0.2121,0.279659 0.391877,0.50602 0.721659,0.897584 0.523145,0.621153 1.383566,1.184531 2.826051,1.167042 0.645199,-0.0078 1.194888,-0.274974 1.670043,-0.616988 0.133402,0.271487 0.310889,0.580814 0.51565,0.886238 0.220115,0.328324 0.465942,0.647853 0.732901,0.900759 0.267011,0.252958 0.560463,0.505916 1.011624,0.444342 h 0.01614 l 0.01509,-0.0052 c 0.335196,-0.06933 0.416392,-0.278097 0.497068,-0.435962 0.08068,-0.157917 0.139908,-0.332957 0.195236,-0.531784 0.11076,-0.397654 0.19763,-0.887695 0.26014,-1.38544 0.03331,-0.263576 0.05819,-0.527048 0.07474,-0.778704 0.226309,0.432058 0.477913,1.021773 0.738627,1.806671 0.336028,1.011728 -0.09015,2.073423 -1.110049,2.842238 -0.342274,0.258007 -0.751691,0.475676 -1.214406,0.636351 -0.0177,-0.313439 -0.06569,-0.688972 -0.142823,-1.072365 -0.07891,-0.392137 -0.185346,-0.787292 -0.333269,-1.128578 -0.147871,-0.341337 -0.306777,-0.681789 -0.732954,-0.824403 l -0.200388,-0.06699 -0.182068,0.105711 c -0.299698,0.172439 -0.484732,0.427478 -0.695322,0.736962 -0.210538,0.309535 -0.415819,0.673357 -0.594659,1.039834 -0.178893,0.366477 -0.330511,0.732121 -0.430914,1.052222 -0.02811,0.08978 -0.05205,0.175717 -0.07126,0.259568 -0.05455,-0.01249 -0.100142,-0.02394 -0.153596,-0.03643 0.0052,-0.01718 0.0062,-0.03383 0.0094,-0.05101 0.0203,-0.129498 0.03071,-0.27357 0.03487,-0.437055 0.0078,-0.327024 -0.01093,-0.727905 -0.05809,-1.135605 -0.04736,-0.407699 -0.121274,-0.818105 -0.243954,-1.175161 -0.122679,-0.357004 -0.262691,-0.728165 -0.70849,-0.877338 l -0.01509,-0.0052 -0.01613,-0.0052 c -0.289288,-0.07526 -0.489624,0.06085 -0.621048,0.166765 -0.131424,0.105868 -0.234689,0.228391 -0.339724,0.370068 -0.209965,0.283407 -0.413268,0.643013 -0.597626,1.019692 -0.184357,0.376626 -0.345917,0.766213 -0.454544,1.105988 -0.01613,0.04997 -0.03019,0.09832 -0.04372,0.14605 -0.05309,-0.02186 -0.108938,-0.0432 -0.158437,-0.0648 -0.734619,-0.321507 -1.034057,-0.614126 -1.158714,-0.955671 -0.124709,-0.341494 -0.08713,-0.857039 0.139023,-1.64074 0.170564,-0.590964 0.499202,-1.468249 0.819563,-2.354279 z m 2.222231,3.284394 c 0.03123,0.0484 0.01301,0.01613 0.04684,0.114039 0.08687,0.25275 0.158021,0.615375 0.200129,0.978833 0.04216,0.363406 0.05746,0.731704 0.05101,1.004597 0,0.06995 -0.0068,0.107013 -0.01093,0.161612 -0.01509,3.65e-4 -0.0052,5.21e-4 -0.01926,0 -0.152555,-0.0062 -0.356171,-0.03331 -0.564315,-0.07126 -0.27487,-0.04997 -0.462299,-0.109199 -0.669974,-0.166765 0.01353,-0.05267 0.01874,-0.08729 0.03852,-0.150369 0.08906,-0.278618 0.236979,-0.639474 0.403692,-0.980134 0.166765,-0.340609 0.355546,-0.665759 0.509195,-0.87307 0.0068,-0.0088 0.0088,-0.0088 0.01561,-0.0177 z m 3.358668,0.652798 c 0.02186,0.03643 0.01249,0.01249 0.03383,0.06105 0.106232,0.245203 0.204344,0.593411 0.27435,0.94141 0.07001,0.348 0.113675,0.699642 0.127208,0.958638 0.0052,0.06095 0,0.09067 0,0.139023 -0.05049,0.01041 -0.03435,0.0094 -0.09952,0.01562 -0.188886,0.0177 -0.43211,0.02446 -0.67622,0.02134 -0.244058,-0.0052 -0.490718,-0.01666 -0.692303,-0.03643 -0.01926,0 -0.0177,-0.0052 -0.03643,-0.0057 0.0088,-0.03123 0.0094,-0.04684 0.0203,-0.08151 0.07974,-0.254155 0.217773,-0.588413 0.380062,-0.920954 0.162289,-0.332489 0.350602,-0.666227 0.526631,-0.924962 0.0648,-0.09525 0.08213,-0.09681 0.142302,-0.166765 z" />\n  </g>\n</svg>\n'
+                };
+                game = new Bubbadeem(canvas, settings);
+
+                var vendors = ['webkit', 'moz'];
+                for(var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
+                    window.requestAnimationFrame = window[vendors[x]+'RequestAnimationFrame'];
+                    window.cancelAnimationFrame =
+                      window[vendors[x]+'CancelAnimationFrame'] || window[vendors[x]+'CancelRequestAnimationFrame'];
+                }
+
+                if (!window.requestAnimationFrame)
+                    window.requestAnimationFrame = function(callback, element) {
+                        var currTime = new Date().getTime();
+                        var timeToCall = Math.max(0, 16 - (currTime - lastTime));
+                        var id = window.setTimeout(function() { callback(currTime + timeToCall); },
+                          timeToCall);
+                        lastTime = currTime + timeToCall;
+                        return id;
+                    };
+
+                if (!window.cancelAnimationFrame)
+                    window.cancelAnimationFrame = function(id) {
+                        clearTimeout(id);
+                    };
+
+                if (typeof (canvas.getContext) !== undefined) {
+                    cx = canvas.getContext('2d');
+
+                    game.init(cx);
+                    mainLoop(game);
+
+                }
+            },
+            false
+        );
+
+    </script>
+</head>
+<body oncontextmenu="return false;">
+    <!--
+    Uncomment the canvas resolution you want to use below.
+    There should only be one <canvas> element uncommented.
+    Custom sizes can be entered, just make sure it is a 16:9 ratio
+    -->
+    <!-- <canvas id="game_canvas" width="3840" height="2160"></canvas> -->
+    <!-- <canvas id="game_canvas" width="2560" height="1440"></canvas> -->
+    <canvas id="game_canvas" width="1920" height="1080"></canvas>
+    <!-- <canvas id="game_canvas" width="1366" height="768"></canvas> -->
+    <!-- <canvas id="game_canvas" width="1280" height="720"></canvas> -->
+    <!-- <canvas id="game_canvas" width="1000" height="562"></canvas> -->
+</body>
+</html>
